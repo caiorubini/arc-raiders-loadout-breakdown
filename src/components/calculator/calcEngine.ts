@@ -60,36 +60,47 @@ export function calcMaterials(loadout: Loadout): MaterialNeed[] {
     .sort((a, b) => b.rarity - a.rarity || a.materialId.localeCompare(b.materialId));
 }
 
-/** Encode a loadout into a URL-safe string */
+/**
+ * URL-safe base64: no +/= chars that break WhatsApp URL detection.
+ */
+function toUrlSafe(b64: string): string {
+  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function fromUrlSafe(s: string): string {
+  let b64 = s.replace(/-/g, "+").replace(/_/g, "/");
+  while (b64.length % 4) b64 += "=";
+  return b64;
+}
+
+/** Encode a loadout into a compact, WhatsApp-friendly URL string */
 export function encodeLoadout(loadout: Loadout): string {
-  const data = {
-    n: loadout.name,
-    a: loadout.augmentId,
-    s: loadout.shieldId,
-    w1: loadout.weapon1Id,
-    w2: loadout.weapon2Id,
-    bp: loadout.backpack,
-    qu: loadout.quickUse,
-    sp: loadout.safePocket,
-    ex: loadout.excludedFromCalc,
-  };
-  return btoa(encodeURIComponent(JSON.stringify(data)));
+  // Strip nulls and empty arrays to minimize size
+  const data: Record<string, unknown> = { a: loadout.augmentId };
+  if (loadout.name) data.n = loadout.name;
+  if (loadout.shieldId) data.s = loadout.shieldId;
+  if (loadout.weapon1Id) data.w1 = loadout.weapon1Id;
+  if (loadout.weapon2Id) data.w2 = loadout.weapon2Id;
+  if (loadout.backpack.length) data.bp = loadout.backpack.map((s) => [s.itemId, s.quantity]);
+  if (loadout.quickUse.length) data.qu = loadout.quickUse.map((s) => [s.itemId, s.quantity]);
+  if (loadout.safePocket.length) data.sp = loadout.safePocket.map((s) => [s.itemId, s.quantity]);
+  return toUrlSafe(btoa(JSON.stringify(data)));
 }
 
 /** Decode a loadout from URL string */
 export function decodeLoadout(encoded: string): Partial<Loadout> | null {
   try {
-    const data = JSON.parse(decodeURIComponent(atob(encoded)));
+    const data = JSON.parse(atob(fromUrlSafe(encoded)));
+    const toSlots = (arr: [string, number][] | undefined) =>
+      (arr ?? []).map(([itemId, quantity]) => ({ itemId, quantity }));
     return {
       name: data.n ?? "Shared Loadout",
       augmentId: data.a,
       shieldId: data.s ?? null,
       weapon1Id: data.w1 ?? null,
       weapon2Id: data.w2 ?? null,
-      backpack: data.bp ?? [],
-      quickUse: data.qu ?? [],
-      safePocket: data.sp ?? [],
-      excludedFromCalc: data.ex ?? [],
+      backpack: toSlots(data.bp),
+      quickUse: toSlots(data.qu),
+      safePocket: toSlots(data.sp),
     };
   } catch {
     return null;

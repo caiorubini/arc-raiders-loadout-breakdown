@@ -193,7 +193,7 @@ function EquipSlot({
             .filter((i) => !excludeIds.includes(i.id))
             .map((i) => (
               <option key={i.id} value={i.id}>
-                {i.name} ({i.weight}w)
+                {i.name}
               </option>
             ))}
         </select>

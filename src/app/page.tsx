@@ -26,7 +26,7 @@ function Dashboard() {
   // Import shared loadout from URL on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const shared = params.get("loadout");
+    const shared = params.get("l");
     if (shared) {
       const data = decodeLoadout(shared);
       if (data) {
@@ -44,7 +44,6 @@ function Dashboard() {
         };
         setLoadouts((prev) => [...prev, imported]);
         setActiveLoadoutId(imported.id);
-        // Clean URL
         window.history.replaceState({}, "", window.location.pathname);
       }
     }
@@ -95,7 +94,8 @@ function Dashboard() {
   const shareLoadout = async () => {
     if (!active) return;
     const encoded = encodeLoadout(active);
-    const url = `${window.location.origin}${window.location.pathname}?loadout=${encoded}`;
+    const slug = encodeURIComponent(active.name.replace(/\s+/g, "-"));
+    const url = `${window.location.origin}${window.location.pathname}?n=${slug}&l=${encoded}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -104,7 +104,7 @@ function Dashboard() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex items-center justify-between px-5 py-2.5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0 gap-3">
+      <header className="flex items-center justify-between px-5 py-2.5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0 gap-4">
         <div className="flex items-center gap-2.5 flex-shrink-0">
           <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-xs">AR</div>
           <div>
@@ -114,12 +114,12 @@ function Dashboard() {
         </div>
 
         {/* Loadout tabs + active controls */}
-        <div className="flex items-center gap-1 overflow-x-auto flex-1 justify-end">
+        <div className="flex items-center gap-1.5 overflow-x-auto flex-1 justify-end">
           {loadouts.map((l) => (
             <button
               key={l.id}
               onClick={() => setActiveLoadoutId(l.id)}
-              className={`px-3 py-1.5 text-sm rounded flex-shrink-0 ${
+              className={`px-3 py-1.5 text-sm rounded flex-shrink-0 transition-colors ${
                 activeLoadoutId === l.id
                   ? "bg-blue-600 text-white"
                   : "bg-zinc-800 text-zinc-400 hover:text-white"
@@ -129,57 +129,66 @@ function Dashboard() {
             </button>
           ))}
 
-          {/* Active loadout controls */}
-          {active && (
-            <>
-              {editing ? (
-                <div className="flex items-center gap-1 bg-zinc-800 rounded px-2 py-1 flex-shrink-0">
-                  <input
-                    type="text"
-                    value={nameInput}
-                    onChange={(e) => setNameInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") { updateLoadout({ name: nameInput || active.name }); setEditing(false); }
-                      if (e.key === "Escape") setEditing(false);
-                    }}
-                    autoFocus
-                    className="w-48 bg-transparent text-sm text-white outline-none"
-                    maxLength={60}
-                  />
-                  <button onClick={() => { updateLoadout({ name: nameInput || active.name }); setEditing(false); }} className="text-emerald-400 hover:text-emerald-300">
-                    <Check size={12} />
-                  </button>
-                  <button onClick={() => setEditing(false)} className="text-zinc-500 hover:text-zinc-300">
-                    <X size={12} />
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <button onClick={() => { setNameInput(active.name); setEditing(true); }} className="text-zinc-500 hover:text-zinc-300 flex-shrink-0" title="Rename">
-                    <Pencil size={12} />
-                  </button>
-                  <button onClick={shareLoadout} className="text-zinc-500 hover:text-blue-400 flex-shrink-0" title="Copy share link">
-                    {copied ? <Check size={12} className="text-emerald-400" /> : <Share2 size={12} />}
-                  </button>
-                  <button onClick={deleteActive} className="text-zinc-500 hover:text-red-400 flex-shrink-0" title="Delete loadout">
-                    <Trash2 size={12} />
-                  </button>
-                </>
-              )}
-            </>
+          {/* Active loadout controls — bigger icons, more spacing */}
+          {active && !editing && (
+            <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+              <button
+                onClick={() => { setNameInput(active.name); setEditing(true); }}
+                className="p-1.5 rounded text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
+                title="Rename"
+              >
+                <Pencil size={15} />
+              </button>
+              <button
+                onClick={shareLoadout}
+                className="p-1.5 rounded text-zinc-400 hover:text-blue-400 hover:bg-zinc-700 transition-colors"
+                title="Copy share link"
+              >
+                {copied ? <Check size={15} className="text-emerald-400" /> : <Share2 size={15} />}
+              </button>
+              <button
+                onClick={deleteActive}
+                className="p-1.5 rounded text-zinc-400 hover:text-red-400 hover:bg-zinc-700 transition-colors"
+                title="Delete loadout"
+              >
+                <Trash2 size={15} />
+              </button>
+            </div>
           )}
 
-          <button onClick={createLoadout} className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded flex-shrink-0">
+          {active && editing && (
+            <div className="flex items-center gap-1.5 bg-zinc-800 rounded px-3 py-1.5 flex-shrink-0 ml-2">
+              <input
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") { updateLoadout({ name: nameInput || active.name }); setEditing(false); }
+                  if (e.key === "Escape") setEditing(false);
+                }}
+                autoFocus
+                className="w-52 bg-transparent text-sm text-white outline-none"
+                maxLength={60}
+              />
+              <button onClick={() => { updateLoadout({ name: nameInput || active.name }); setEditing(false); }} className="p-1 text-emerald-400 hover:text-emerald-300">
+                <Check size={14} />
+              </button>
+              <button onClick={() => setEditing(false)} className="p-1 text-zinc-500 hover:text-zinc-300">
+                <X size={14} />
+              </button>
+            </div>
+          )}
+
+          <button onClick={createLoadout} className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded flex-shrink-0 ml-1">
             <Plus size={14} /> New
           </button>
         </div>
       </header>
 
       {/* 3-column layout */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden relative">
         {active ? (
           <div className="h-full grid grid-cols-3 divide-x divide-zinc-800">
-            {/* Col 1: Augment + Shield + Weapons */}
             <div className="overflow-y-auto p-4 space-y-3">
               <AugmentSelector
                 augmentId={active.augmentId}
@@ -189,13 +198,9 @@ function Dashboard() {
               />
               <CoreGearSlots loadout={active} onUpdate={updateLoadout} />
             </div>
-
-            {/* Col 2: Backpack + Quick Use + Safe Pocket */}
             <div className="overflow-y-auto p-4">
               <InventorySlots loadout={active} onUpdate={updateLoadout} />
             </div>
-
-            {/* Col 3: Material Checklist */}
             <div className="overflow-y-auto p-4">
               <MaterialChecklist loadout={active} />
             </div>
@@ -205,6 +210,11 @@ function Dashboard() {
             Create a loadout to get started.
           </div>
         )}
+
+        {/* Footer credit */}
+        <div className="absolute bottom-2 right-3 text-[10px] text-zinc-700 select-none">
+          by Rubinsk
+        </div>
       </main>
     </div>
   );
