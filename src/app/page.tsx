@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { Plus, Trash2, Pencil, Check, X } from "lucide-react";
+import React, { useState, useCallback, useEffect } from "react";
+import { Plus, Trash2, Pencil, Check, X, Share2 } from "lucide-react";
 import { GameStoreProvider } from "@/components/GameStoreProvider";
 import { useGameStore } from "@/hooks/useGameStore";
 import { AugmentSelector } from "@/components/loadout/AugmentSelector";
 import { CoreGearSlots, InventorySlots } from "@/components/loadout/EquipmentSlots";
 import { MaterialChecklist } from "@/components/calculator/MaterialCalculator";
+import { encodeLoadout, decodeLoadout } from "@/components/calculator/calcEngine";
 import { AUGMENTS } from "@/data/augments";
 import { Loadout } from "@/types/game";
 
@@ -15,12 +16,39 @@ function generateId() {
 }
 
 function Dashboard() {
-  const { loadouts, setLoadouts, activeLoadoutId, setActiveLoadoutId } =
-    useGameStore();
-  const [editingName, setEditingName] = useState<string | null>(null);
+  const { loadouts, setLoadouts, activeLoadoutId, setActiveLoadoutId } = useGameStore();
+  const [editing, setEditing] = useState(false);
   const [nameInput, setNameInput] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const active = loadouts.find((l) => l.id === activeLoadoutId) ?? null;
+
+  // Import shared loadout from URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shared = params.get("loadout");
+    if (shared) {
+      const data = decodeLoadout(shared);
+      if (data) {
+        const imported: Loadout = {
+          id: generateId(),
+          name: data.name ?? "Shared Loadout",
+          augmentId: data.augmentId ?? AUGMENTS[0].id,
+          shieldId: data.shieldId ?? null,
+          weapon1Id: data.weapon1Id ?? null,
+          weapon2Id: data.weapon2Id ?? null,
+          backpack: data.backpack ?? [],
+          quickUse: data.quickUse ?? [],
+          safePocket: data.safePocket ?? [],
+          excludedFromCalc: data.excludedFromCalc ?? [],
+        };
+        setLoadouts((prev) => [...prev, imported]);
+        setActiveLoadoutId(imported.id);
+        // Clean URL
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const createLoadout = () => {
     const newLoadout: Loadout = {
@@ -38,9 +66,10 @@ function Dashboard() {
     setActiveLoadoutId(newLoadout.id);
   };
 
-  const deleteLoadout = (id: string) => {
-    setLoadouts((prev) => prev.filter((l) => l.id !== id));
-    if (activeLoadoutId === id) setActiveLoadoutId(null);
+  const deleteActive = () => {
+    if (!active) return;
+    setLoadouts((prev) => prev.filter((l) => l.id !== active.id));
+    setActiveLoadoutId(null);
   };
 
   const updateLoadout = useCallback(
@@ -53,103 +82,95 @@ function Dashboard() {
     [activeLoadoutId, setLoadouts]
   );
 
+  const toggleAugmentExclude = () => {
+    if (!active) return;
+    const current = active.excludedFromCalc ?? [];
+    updateLoadout({
+      excludedFromCalc: current.includes("augment")
+        ? current.filter((k) => k !== "augment")
+        : [...current, "augment"],
+    });
+  };
+
+  const shareLoadout = async () => {
+    if (!active) return;
+    const encoded = encodeLoadout(active);
+    const url = `${window.location.origin}${window.location.pathname}?loadout=${encoded}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex items-center justify-between px-5 py-2.5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
-            AR
-          </div>
+      <header className="flex items-center justify-between px-5 py-2.5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0 gap-3">
+        <div className="flex items-center gap-2.5 flex-shrink-0">
+          <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-xs">AR</div>
           <div>
             <h1 className="text-sm font-bold text-white leading-none">ARC Raiders</h1>
             <p className="text-[10px] text-zinc-500">Loadout Builder</p>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+
+        {/* Loadout tabs + active controls */}
+        <div className="flex items-center gap-1 overflow-x-auto flex-1 justify-end">
           {loadouts.map((l) => (
-            <div key={l.id} className="flex items-center">
-              {editingName === l.id ? (
-                <div className="flex items-center gap-1 bg-zinc-800 rounded px-2 py-1">
+            <button
+              key={l.id}
+              onClick={() => setActiveLoadoutId(l.id)}
+              className={`px-3 py-1.5 text-sm rounded flex-shrink-0 ${
+                activeLoadoutId === l.id
+                  ? "bg-blue-600 text-white"
+                  : "bg-zinc-800 text-zinc-400 hover:text-white"
+              }`}
+            >
+              <span className="truncate max-w-[200px] inline-block align-middle">{l.name}</span>
+            </button>
+          ))}
+
+          {/* Active loadout controls */}
+          {active && (
+            <>
+              {editing ? (
+                <div className="flex items-center gap-1 bg-zinc-800 rounded px-2 py-1 flex-shrink-0">
                   <input
                     type="text"
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        setLoadouts((prev) =>
-                          prev.map((lo) =>
-                            lo.id === l.id ? { ...lo, name: nameInput || lo.name } : lo
-                          )
-                        );
-                        setEditingName(null);
-                      }
-                      if (e.key === "Escape") setEditingName(null);
+                      if (e.key === "Enter") { updateLoadout({ name: nameInput || active.name }); setEditing(false); }
+                      if (e.key === "Escape") setEditing(false);
                     }}
                     autoFocus
-                    className="w-24 bg-transparent text-sm text-white outline-none"
+                    className="w-48 bg-transparent text-sm text-white outline-none"
+                    maxLength={60}
                   />
-                  <button
-                    onClick={() => {
-                      setLoadouts((prev) =>
-                        prev.map((lo) =>
-                          lo.id === l.id ? { ...lo, name: nameInput || lo.name } : lo
-                        )
-                      );
-                      setEditingName(null);
-                    }}
-                    className="text-emerald-400 hover:text-emerald-300"
-                  >
+                  <button onClick={() => { updateLoadout({ name: nameInput || active.name }); setEditing(false); }} className="text-emerald-400 hover:text-emerald-300">
                     <Check size={12} />
                   </button>
-                  <button onClick={() => setEditingName(null)} className="text-zinc-500 hover:text-zinc-300">
+                  <button onClick={() => setEditing(false)} className="text-zinc-500 hover:text-zinc-300">
                     <X size={12} />
                   </button>
                 </div>
               ) : (
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setActiveLoadoutId(l.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") setActiveLoadoutId(l.id);
-                  }}
-                  className={`px-3 py-1.5 text-sm rounded cursor-pointer select-none flex items-center gap-1.5 ${
-                    activeLoadoutId === l.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-800 text-zinc-400 hover:text-white"
-                  }`}
-                >
-                  <span className="truncate max-w-[100px]">{l.name}</span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setNameInput(l.name);
-                      setEditingName(l.id);
-                    }}
-                    className="opacity-60 hover:opacity-100"
-                  >
-                    <Pencil size={10} />
+                <>
+                  <button onClick={() => { setNameInput(active.name); setEditing(true); }} className="text-zinc-500 hover:text-zinc-300 flex-shrink-0" title="Rename">
+                    <Pencil size={12} />
                   </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteLoadout(l.id);
-                    }}
-                    className="opacity-60 hover:opacity-100 text-red-400"
-                  >
-                    <Trash2 size={10} />
+                  <button onClick={shareLoadout} className="text-zinc-500 hover:text-blue-400 flex-shrink-0" title="Copy share link">
+                    {copied ? <Check size={12} className="text-emerald-400" /> : <Share2 size={12} />}
                   </button>
-                </div>
+                  <button onClick={deleteActive} className="text-zinc-500 hover:text-red-400 flex-shrink-0" title="Delete loadout">
+                    <Trash2 size={12} />
+                  </button>
+                </>
               )}
-            </div>
-          ))}
-          <button
-            onClick={createLoadout}
-            className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded"
-          >
-            <Plus size={14} />
-            New
+            </>
+          )}
+
+          <button onClick={createLoadout} className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded flex-shrink-0">
+            <Plus size={14} /> New
           </button>
         </div>
       </header>
@@ -162,9 +183,9 @@ function Dashboard() {
             <div className="overflow-y-auto p-4 space-y-3">
               <AugmentSelector
                 augmentId={active.augmentId}
-                onChange={(augmentId) =>
-                  updateLoadout({ augmentId, backpack: [], quickUse: [], safePocket: [] })
-                }
+                onChange={(augmentId) => updateLoadout({ augmentId, backpack: [], quickUse: [], safePocket: [] })}
+                eyeActive={!(active.excludedFromCalc ?? []).includes("augment")}
+                onEyeToggle={toggleAugmentExclude}
               />
               <CoreGearSlots loadout={active} onUpdate={updateLoadout} />
             </div>

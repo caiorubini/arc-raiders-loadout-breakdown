@@ -88,5 +88,7 @@ export interface Loadout {
   backpack: LoadoutSlot[];
   quickUse: LoadoutSlot[];
   safePocket: LoadoutSlot[];
+  /** Item slots excluded from material calc (eye toggle off). "augment" | shieldId | weapon1Id | etc */
+  excludedFromCalc?: string[];
 }
 

@@ -197,21 +197,22 @@ function MaterialRow({
           {item?.name ?? mat.materialId}
         </span>
 
+        {/* Breakdown button — left of quantity */}
+        {hasCraft && !checked && (
+          <button
+            onClick={onBreakdown}
+            className="flex items-center gap-1 text-[10px] text-zinc-600 hover:text-blue-400 flex-shrink-0 uppercase tracking-wide"
+            title="Break down into crafting components"
+          >
+            <Layers size={11} />
+            Breakdown
+          </button>
+        )}
+
         {/* Quantity */}
         <span className={`text-sm font-mono flex-shrink-0 ${checked ? "text-zinc-600" : "text-zinc-300"}`}>
           x{mat.quantity}
         </span>
-
-        {/* Breakdown button */}
-        {hasCraft && !checked && (
-          <button
-            onClick={onBreakdown}
-            className="text-zinc-600 hover:text-blue-400 flex-shrink-0"
-            title="Break down into components"
-          >
-            <Layers size={14} />
-          </button>
-        )}
 
         {/* Expand chevron */}
         {hasAlternatives && (
