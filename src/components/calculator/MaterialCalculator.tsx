@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState, useCallback } from "react";
-import { Check, Package, Hammer, Recycle, ChevronRight, Undo2, Layers } from "lucide-react";
+import { Check, Package, Hammer, Recycle, ChevronRight, Undo2, Layers, ArrowUpDown } from "lucide-react";
 import { useGameStore } from "@/hooks/useGameStore";
 import { ITEMS_MAP, RECYCLE_SOURCES } from "@/data/items";
 import { calcMaterials } from "./calcEngine";
@@ -15,14 +15,16 @@ interface DisplayMaterial {
   brokenDown: boolean;
 }
 
+type SortMode = "rarity" | "quantity";
+
 export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
   const { checkedMaterials, setCheckedMaterials } = useGameStore();
   const checkedSet = useMemo(() => new Set(checkedMaterials), [checkedMaterials]);
 
   const baseMaterials = useMemo(() => calcMaterials(loadout), [loadout]);
 
-  // Track which materials have been broken down
   const [breakdowns, setBreakdowns] = useState<Set<string>>(new Set());
+  const [sortMode, setSortMode] = useState<SortMode>("quantity");
 
   const breakdownMat = useCallback((matId: string) => {
     setBreakdowns((prev) => new Set(prev).add(matId));
@@ -36,53 +38,74 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
     });
   }, []);
 
-  // Compute display list: apply breakdowns
+  // Recursive breakdown: keep expanding until stable
   const { active, broken } = useMemo(() => {
-    const extra: Record<string, number> = {};
-    const brokenList: DisplayMaterial[] = [];
-
+    // Start with base materials as a working pool
+    let pool: Record<string, { quantity: number; rarity: number }> = {};
     for (const mat of baseMaterials) {
-      if (breakdowns.has(mat.materialId)) {
-        const item = ITEMS_MAP[mat.materialId];
-        if (item && Object.keys(item.craftCost).length > 0) {
-          // Expand: qty * craftCost per unit
-          for (const [compId, perUnit] of Object.entries(item.craftCost)) {
-            extra[compId] = (extra[compId] ?? 0) + perUnit * mat.quantity;
-          }
-          brokenList.push({ ...mat, brokenDown: true });
-        }
-      }
-    }
-
-    // Build active list: non-broken + extras merged
-    const merged: Record<string, { quantity: number; rarity: number }> = {};
-    for (const mat of baseMaterials) {
-      if (!breakdowns.has(mat.materialId)) {
-        merged[mat.materialId] = {
-          quantity: (merged[mat.materialId]?.quantity ?? 0) + mat.quantity,
-          rarity: mat.rarity,
-        };
-      }
-    }
-    for (const [id, qty] of Object.entries(extra)) {
-      const r = ITEMS_MAP[id]?.rarity ?? 0;
-      merged[id] = {
-        quantity: (merged[id]?.quantity ?? 0) + qty,
-        rarity: r,
+      pool[mat.materialId] = {
+        quantity: (pool[mat.materialId]?.quantity ?? 0) + mat.quantity,
+        rarity: mat.rarity,
       };
     }
 
-    const activeList: DisplayMaterial[] = Object.entries(merged)
+    const brokenList: DisplayMaterial[] = [];
+
+    // Iterate: expand any material in pool that's in breakdowns
+    let changed = true;
+    while (changed) {
+      changed = false;
+      const nextPool: Record<string, { quantity: number; rarity: number }> = {};
+
+      for (const [matId, { quantity, rarity }] of Object.entries(pool)) {
+        if (breakdowns.has(matId)) {
+          const item = ITEMS_MAP[matId];
+          if (item && Object.keys(item.craftCost).length > 0) {
+            // Expand into components
+            for (const [compId, perUnit] of Object.entries(item.craftCost)) {
+              const r = ITEMS_MAP[compId]?.rarity ?? 0;
+              nextPool[compId] = {
+                quantity: (nextPool[compId]?.quantity ?? 0) + perUnit * quantity,
+                rarity: r,
+              };
+            }
+            // Track as broken down (avoid duplicates)
+            if (!brokenList.some((b) => b.materialId === matId)) {
+              brokenList.push({ materialId: matId, quantity, rarity, brokenDown: true });
+            } else {
+              // Update quantity if already in broken list
+              const existing = brokenList.find((b) => b.materialId === matId)!;
+              existing.quantity = quantity;
+            }
+            changed = true;
+            continue;
+          }
+        }
+        // Keep in pool
+        nextPool[matId] = {
+          quantity: (nextPool[matId]?.quantity ?? 0) + quantity,
+          rarity: rarity,
+        };
+      }
+      pool = nextPool;
+    }
+
+    const sorter = (a: DisplayMaterial, b: DisplayMaterial) =>
+      sortMode === "quantity"
+        ? b.quantity - a.quantity || b.rarity - a.rarity
+        : b.rarity - a.rarity || a.materialId.localeCompare(b.materialId);
+
+    const activeList: DisplayMaterial[] = Object.entries(pool)
       .map(([materialId, { quantity, rarity }]) => ({
         materialId,
         quantity,
         rarity,
         brokenDown: false,
       }))
-      .sort((a, b) => b.rarity - a.rarity || a.materialId.localeCompare(b.materialId));
+      .sort(sorter);
 
     return { active: activeList, broken: brokenList };
-  }, [baseMaterials, breakdowns]);
+  }, [baseMaterials, breakdowns, sortMode]);
 
   const toggle = (matId: string) => {
     setCheckedMaterials((prev) =>
@@ -105,7 +128,17 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
     <div>
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-sm font-bold text-white uppercase tracking-wide">Materials</h2>
-        <span className="text-xs text-zinc-500">{done}/{active.length}</span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setSortMode((s) => (s === "rarity" ? "quantity" : "rarity"))}
+            className="flex items-center gap-1 text-[10px] text-zinc-500 hover:text-zinc-300 uppercase tracking-wide"
+            title={`Sort by ${sortMode === "rarity" ? "quantity" : "rarity"}`}
+          >
+            <ArrowUpDown size={10} />
+            {sortMode === "rarity" ? "Rarity" : "Qty"}
+          </button>
+          <span className="text-xs text-zinc-500">{done}/{active.length}</span>
+        </div>
       </div>
 
       <div className="space-y-1">
@@ -120,7 +153,6 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
         ))}
       </div>
 
-      {/* Broken down items */}
       {broken.length > 0 && (
         <div className="mt-4 pt-3 border-t border-zinc-800">
           <div className="text-[10px] text-zinc-600 uppercase tracking-wide mb-2 flex items-center gap-1">
@@ -130,18 +162,11 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
           {broken.map((mat) => {
             const item = ITEMS_MAP[mat.materialId];
             return (
-              <div
-                key={mat.materialId}
-                className="flex items-center gap-2 px-3 py-1.5 text-zinc-600"
-              >
+              <div key={mat.materialId} className="flex items-center gap-2 px-3 py-1.5 text-zinc-600">
                 {item && <ItemIcon name={item.name} imageUrl={item.imageUrl} rarity={item.rarity} size={20} />}
                 <span className="flex-1 text-xs line-through truncate">{item?.name ?? mat.materialId}</span>
                 <span className="text-xs font-mono">x{mat.quantity}</span>
-                <button
-                  onClick={() => undoBreakdown(mat.materialId)}
-                  className="text-zinc-600 hover:text-zinc-300 ml-1"
-                  title="Undo breakdown"
-                >
+                <button onClick={() => undoBreakdown(mat.materialId)} className="text-zinc-600 hover:text-zinc-300 ml-1" title="Undo breakdown">
                   <Undo2 size={12} />
                 </button>
               </div>
@@ -177,27 +202,21 @@ function MaterialRow({
           checked ? "bg-zinc-800/20" : "bg-zinc-800/40"
         }`}
       >
-        {/* Checkbox */}
         <button
           onClick={onToggle}
           className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
-            checked
-              ? "bg-emerald-600 text-white"
-              : "border border-zinc-600 hover:border-zinc-400"
+            checked ? "bg-emerald-600 text-white" : "border border-zinc-600 hover:border-zinc-400"
           }`}
         >
           {checked && <Check size={12} strokeWidth={3} />}
         </button>
 
-        {/* Icon */}
         {item && <ItemIcon name={item.name} imageUrl={item.imageUrl} rarity={item.rarity} size={22} />}
 
-        {/* Name */}
         <span className={`flex-1 text-sm truncate ${checked ? "text-zinc-500 line-through" : "text-white"}`}>
           {item?.name ?? mat.materialId}
         </span>
 
-        {/* Breakdown button — left of quantity */}
         {hasCraft && !checked && (
           <button
             onClick={onBreakdown}
@@ -209,26 +228,20 @@ function MaterialRow({
           </button>
         )}
 
-        {/* Quantity */}
         <span className={`text-sm font-mono flex-shrink-0 ${checked ? "text-zinc-600" : "text-zinc-300"}`}>
           x{mat.quantity}
         </span>
 
-        {/* Expand chevron */}
         {hasAlternatives && (
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-zinc-600 hover:text-zinc-300 flex-shrink-0 transition-transform"
           >
-            <ChevronRight
-              size={14}
-              className={`transition-transform ${expanded ? "rotate-90" : ""}`}
-            />
+            <ChevronRight size={14} className={`transition-transform ${expanded ? "rotate-90" : ""}`} />
           </button>
         )}
       </div>
 
-      {/* Expanded alternatives */}
       {expanded && (
         <div className="ml-8 mr-2 mb-1 px-3 py-2 bg-zinc-900/60 rounded-b border-x border-b border-zinc-800/50 space-y-2">
           {hasCraft && (
