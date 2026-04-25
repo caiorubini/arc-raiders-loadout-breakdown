@@ -3,7 +3,7 @@
  * ARC Raiders Wiki Sync
  *
  * Scrapes arcraiders.wiki and outputs structured JSON for all items,
- * weapons, augments, shields, ammo, mods, grenades, and materials.
+ * weapons, augments, shields, ammo, mods, grenades, materials, AND traders.
  *
  * Usage:  node scripts/sync-wiki.mjs
  * Output: scripts/wiki-data.json
@@ -40,6 +40,11 @@ async function getWikitext(title) {
   return data?.parse?.wikitext?.["*"] ?? "";
 }
 
+/** Normalize an item name to a stable ID. */
+function toId(name) {
+  return name.toLowerCase().replace(/[.'()]/g, "").replace(/\s+/g, "_");
+}
+
 /** Parse {{Infobox ...|key=val|...}} */
 function parseInfobox(wikitext) {
   const match = wikitext.match(/\{\{Infobox\s+\w+[\s\S]*?\n([\s\S]*?)\n\}\}/i);
@@ -57,11 +62,9 @@ function parseCrafting(wikitext) {
   const match = wikitext.match(/\{\{Crafting[\s\S]*?\}\}/i);
   if (!match) return { cost: {}, qty: 1, station: "" };
   const block = match[0];
-
   const ingMatch = block.match(/ingredients\s*=\s*([\s\S]*?)(?:\||}})/);
   const qtyMatch = block.match(/qty\s*=\s*(\d+)/);
   const staMatch = block.match(/station\s*=\s*([\s\S]*?)(?:\||}})/);
-
   return {
     cost: parseMaterials(ingMatch?.[1] ?? ""),
     qty: parseInt(qtyMatch?.[1]) || 1,
@@ -84,10 +87,7 @@ function parseMaterials(str) {
   const parts = str.split("+").map((s) => s.trim());
   for (const part of parts) {
     const m = part.match(/^(\d+)\s*(?:\[\[)?([A-Za-z][A-Za-z\s.'()]+?)(?:\]\])?$/);
-    if (m) {
-      const id = m[2].trim().toLowerCase().replace(/[.'()]/g, "").replace(/\s+/g, "_");
-      result[id] = parseInt(m[1]);
-    }
+    if (m) result[toId(m[2])] = parseInt(m[1]);
   }
   return result;
 }
@@ -95,6 +95,162 @@ function parseMaterials(str) {
 function parseRarity(str) {
   const map = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
   return map[(str || "").toLowerCase()] ?? 0;
+}
+
+/** Parse a {{Price|N}} template or fallback to plain number */
+function parsePrice(str) {
+  if (!str) return 0;
+  const m = str.match(/\{\{Price\s*\|\s*([\d,]+)/);
+  if (m) return parseInt(m[1].replace(/,/g, ""), 10) || 0;
+  const n = str.replace(/[^\d]/g, "");
+  return n ? parseInt(n, 10) : 0;
+}
+
+/**
+ * Find the body of a {{TemplateName ...}} call, balancing braces.
+ * Returns the body string (between the opening {{ and matching }}) or null.
+ */
+function extractTemplate(wikitext, name) {
+  const openRe = new RegExp(`\\{\\{${name}\\b`, "i");
+  const startMatch = wikitext.match(openRe);
+  if (!startMatch) return null;
+  const start = startMatch.index + startMatch[0].length;
+  let depth = 1;
+  let i = start;
+  while (i < wikitext.length && depth > 0) {
+    if (wikitext[i] === "{" && wikitext[i + 1] === "{") {
+      depth++;
+      i += 2;
+    } else if (wikitext[i] === "}" && wikitext[i + 1] === "}") {
+      depth--;
+      i += 2;
+      if (depth === 0) return wikitext.slice(start, i - 2);
+    } else {
+      i++;
+    }
+  }
+  return null;
+}
+
+/**
+ * Split a template body into its top-level | params, respecting nested {{...}} and [[...]].
+ */
+function splitTemplateParams(body) {
+  const parts = [];
+  let buf = "";
+  let braceDepth = 0;
+  let bracketDepth = 0;
+  for (let i = 0; i < body.length; i++) {
+    const c = body[i];
+    const c2 = body[i + 1];
+    if (c === "{" && c2 === "{") {
+      braceDepth++;
+      buf += "{{";
+      i++;
+      continue;
+    }
+    if (c === "}" && c2 === "}") {
+      braceDepth--;
+      buf += "}}";
+      i++;
+      continue;
+    }
+    if (c === "[" && c2 === "[") {
+      bracketDepth++;
+      buf += "[[";
+      i++;
+      continue;
+    }
+    if (c === "]" && c2 === "]") {
+      bracketDepth--;
+      buf += "]]";
+      i++;
+      continue;
+    }
+    if (c === "|" && braceDepth === 0 && bracketDepth === 0) {
+      parts.push(buf);
+      buf = "";
+      continue;
+    }
+    buf += c;
+  }
+  if (buf) parts.push(buf);
+  return parts;
+}
+
+/**
+ * Parse a trader page wikitext into a list of inventory entries.
+ * Trader pages use {{ItemGrid|name1=...|price1=...|category-icon1=...|isLimited1=true}}
+ */
+function parseTraderInventory(wikitext) {
+  const body = extractTemplate(wikitext, "ItemGrid");
+  if (!body) return [];
+
+  const fields = {};
+  for (const part of splitTemplateParams(body)) {
+    const m = part.match(/^\s*([a-zA-Z][a-zA-Z-]*)(\d+)\s*=([\s\S]*)$/);
+    if (!m) continue;
+    const [, key, idx, valueRaw] = m;
+    if (!fields[idx]) fields[idx] = {};
+    fields[idx][key] = valueRaw.trim();
+  }
+
+  const entries = [];
+  for (const idx of Object.keys(fields).sort((a, b) => parseInt(a) - parseInt(b))) {
+    const f = fields[idx];
+    if (!f.name) continue;
+    const isLimited = (f.isLimited || "").toLowerCase() === "true";
+    let dailyLimit = null;
+    let batchQuantity = null;
+    const cat = f["category-icon"] || "";
+    if (isLimited) {
+      const lm = cat.match(/(\d+)\s*\/\s*(\d+)/);
+      if (lm) dailyLimit = parseInt(lm[1], 10);
+    }
+    const xm = cat.match(/×\s*(\d+)/);
+    if (xm) batchQuantity = parseInt(xm[1], 10);
+
+    entries.push({
+      itemId: toId(f.name),
+      itemName: f.name,
+      displayName: f.disp || f.name,
+      price: parsePrice(f.price || ""),
+      rarity: parseRarity(f.rarity),
+      isLimited,
+      dailyLimit,
+      batchQuantity,
+    });
+  }
+  return entries;
+}
+
+const TRADER_PAGES = [
+  { id: "tian_wen", page: "Tian_Wen", currency: "coins" },
+  { id: "celeste", page: "Celeste", currency: "coins" },
+  { id: "shani", page: "Shani", currency: "cred" },
+  { id: "apollo", page: "Apollo", currency: "coins" },
+  { id: "lance", page: "Lance", currency: "coins" },
+];
+
+async function scrapeTraders() {
+  const traders = {};
+  for (const t of TRADER_PAGES) {
+    process.stdout.write(`Trader "${t.id}"...`);
+    try {
+      const wikitext = await getWikitext(t.page);
+      const entries = parseTraderInventory(wikitext).map((e) => ({
+        ...e,
+        currency: t.currency,
+      }));
+      traders[t.id] = entries;
+      console.log(` ${entries.length} entries`);
+    } catch (e) {
+      console.log(` failed: ${e.message}`);
+      traders[t.id] = [];
+    }
+    await sleep(DELAY);
+  }
+  return traders;
 }
 
 async function main() {
@@ -158,42 +314,41 @@ async function main() {
 
       results.push({
         wiki_title: title,
-        id: (p.name || title).toLowerCase().replace(/[.'()]/g, "").replace(/\s+/g, "_"),
+        id: toId(p.name || title),
         name: p.name || title,
         rarity: parseRarity(p.rarity),
         image: (p.image || "").replace(/^File:/i, "").trim(),
         weight: parseFloat(p.weight) || 0,
         stack_size: parseInt(p.stacksize) || parseInt(p.stack_size) || 1,
 
-        // Type detection
         infobox_type: wikitext.match(/\{\{Infobox\s+(\w+)/i)?.[1]?.toLowerCase() ?? "",
         item_type: p.type || "",
         ammo_type: p.ammo || "",
 
-        // Augment fields
+        // Augment slot fields (extended)
         slot_backpack: parseInt(p.slot_backpack) || 0,
         slot_quickuse: parseInt(p.slot_quickuse) || 0,
         slot_safepocket: parseInt(p.slot_safepocket) || 0,
+        slot_healing: parseInt(p.slot_healing) || 0,
+        slot_grenade: parseInt(p.slot_grenade) || 0,
+        slot_utility: parseInt(p.slot_utility) || 0,
+        slot_trinket: parseInt(p.slot_trinket) || 0,
         weight_limit: parseFloat(p.wlimit) || 0,
         shield_compat: parseInt(p.shield_compatibility) || 0,
         integrated_tool: p.integrated_tool || "",
 
-        // Shield fields
         charge: p.charge || "",
 
-        // Craft & recycle
         craft_cost: crafting.cost,
         craft_yield: crafting.qty,
         craft_station: crafting.station,
         recycle_yield: recycling,
 
-        // Weapon stats
         damage: p.damage || "",
         fire_rate: p.fire_rate || p.firerate || "",
         magazine: p.magsize || "",
         firing_mode: p.firingmode || "",
 
-        // Raw for debugging
         _raw: p,
       });
       console.log(" OK");
@@ -203,20 +358,35 @@ async function main() {
     await sleep(DELAY);
   }
 
+  console.log(`\n--- Scraping traders ---`);
+  const traders = await scrapeTraders();
+
   const fs = await import("fs");
   const path = await import("path");
   const outPath = path.join(import.meta.dirname, "wiki-data.json");
-  fs.writeFileSync(outPath, JSON.stringify({ fetched_at: new Date().toISOString(), count: results.length, items: results }, null, 2));
+  fs.writeFileSync(
+    outPath,
+    JSON.stringify(
+      { fetched_at: new Date().toISOString(), count: results.length, items: results, traders },
+      null,
+      2
+    )
+  );
 
-  console.log(`\nDone! ${results.length} items → ${outPath}`);
+  console.log(`\nDone! ${results.length} items + ${Object.keys(traders).length} traders → ${outPath}`);
 
-  // Summary
   const types = {};
   for (const r of results) {
     const t = r.infobox_type || "unknown";
     types[t] = (types[t] || 0) + 1;
   }
   console.log("\nBy type:", types);
+  console.log("Trader entry counts:", Object.fromEntries(Object.entries(traders).map(([k, v]) => [k, v.length])));
+
+  // Sanity checks
+  const found = (id) => results.some((r) => r.id === id);
+  console.log(`\nDolabra present: ${found("dolabra")}`);
+  console.log(`Canto present: ${found("canto")}`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

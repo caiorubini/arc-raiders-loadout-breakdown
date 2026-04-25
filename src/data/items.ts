@@ -2,7 +2,7 @@ import { GameItem, Rarity, ShieldTier } from "@/types/game";
 
 /**
  * AUTO-GENERATED from wiki-data.json by scripts/generate-data.mjs
- * Last synced: 2026-03-29T22:03:31.760Z
+ * Last synced: 2026-04-25T15:31:40.742Z
  * Do not edit manually — run: npm run sync
  */
 export const GAME_ITEMS: GameItem[] = [
@@ -18,6 +18,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 5, simple_gun_parts: 6 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Hand Cannon",
     ammoType: "heavy_ammo",
   },
   {
@@ -32,6 +33,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 3, complex_gun_parts: 3, matriarch_reactor: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Battle Rifle",
     ammoType: "energy_clip",
   },
   {
@@ -46,6 +48,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 6, simple_gun_parts: 6 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Assault Rifle",
     ammoType: "medium_ammo",
   },
   {
@@ -60,6 +63,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_mechanical_components: 3, heavy_gun_parts: 3, canister: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Assault Rifle",
     ammoType: "heavy_ammo",
   },
   {
@@ -74,6 +78,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 1, light_gun_parts: 3, exodus_modules: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "SMG",
     ammoType: "light_ammo",
   },
   {
@@ -88,7 +93,38 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 3, simple_gun_parts: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Pistol",
     ammoType: "light_ammo",
+  },
+  {
+    id: "canto",
+    name: "Canto",
+    category: "weapon",
+    rarity: 2 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 4,
+    recycleYield: { advanced_mechanical_components: 1, medium_gun_parts: 2 },
+    craftCost: { advanced_mechanical_components: 2, magnet: 5, medium_gun_parts: 3 },
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "SMG",
+    ammoType: "medium_ammo",
+  },
+  {
+    id: "dolabra",
+    name: "Dolabra",
+    category: "weapon",
+    rarity: 4 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 8,
+    recycleYield: { magnetic_accelerator: 2 },
+    craftCost: { shredder_gyro: 3, magnetic_accelerator: 3, vaporizer_regulator: 2 },
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Shotgun",
+    ammoType: "energy_clip",
   },
   {
     id: "equalizer",
@@ -102,6 +138,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 3, complex_gun_parts: 3, queen_reactor: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Special",
     ammoType: "energy_clip",
   },
   {
@@ -116,6 +153,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 5, rubber_parts: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Battle Rifle",
     ammoType: "heavy_ammo",
   },
   {
@@ -130,6 +168,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 2, plastic_parts: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Pistol",
     ammoType: "light_ammo",
   },
   {
@@ -144,6 +183,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 1, heavy_gun_parts: 3, exodus_modules: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Special",
     ammoType: "launcher_ammo",
   },
   {
@@ -158,6 +198,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 5, simple_gun_parts: 6 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Shotgun",
     ammoType: "shotgun_ammo",
   },
   {
@@ -172,6 +213,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 3, complex_gun_parts: 3, queen_reactor: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Sniper Rifle",
     ammoType: "energy_clip",
   },
   {
@@ -186,6 +228,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 6, rubber_parts: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Assault Rifle",
     ammoType: "light_ammo",
   },
   {
@@ -200,6 +243,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_mechanical_components: 2, medium_gun_parts: 3, wires: 7 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Sniper Rifle",
     ammoType: "medium_ammo",
   },
   {
@@ -214,6 +258,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 16, rubber_parts: 12 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Assault Rifle",
     ammoType: "medium_ammo",
   },
   {
@@ -228,6 +273,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_mechanical_components: 2, medium_gun_parts: 3, oil: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Battle Rifle",
     ammoType: "medium_ammo",
   },
   {
@@ -242,6 +288,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 8, rubber_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "SMG",
     ammoType: "light_ammo",
   },
   {
@@ -256,6 +303,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 1, medium_gun_parts: 3, exodus_modules: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Assault Rifle",
     ammoType: "medium_ammo",
   },
   {
@@ -270,6 +318,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_mechanical_components: 2, medium_gun_parts: 3, steel_spring: 6 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "LMG",
     ammoType: "medium_ammo",
   },
   {
@@ -284,6 +333,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_mechanical_components: 2, medium_gun_parts: 3, magnet: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Pistol",
     ammoType: "medium_ammo",
   },
   {
@@ -298,6 +348,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { magnetic_accelerator: 1, heavy_gun_parts: 3, exodus_modules: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Shotgun",
     ammoType: "shotgun_ammo",
   },
   {
@@ -354,6 +405,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { explosive_compound: 1, oil: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "blue_light_stick",
@@ -367,6 +419,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "firecracker",
@@ -380,6 +433,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 4, chemicals: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "gas_grenade",
@@ -393,6 +447,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 4, rubber_parts: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "green_light_stick",
@@ -406,6 +461,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "heavy_fuze_grenade",
@@ -419,6 +475,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { explosive_compound: 1, canister: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "lil_smoke_grenade",
@@ -432,6 +489,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 5, plastic_parts: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "light_impact_grenade",
@@ -445,6 +503,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 2, chemicals: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "lure_grenade",
@@ -458,6 +517,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { speaker_component: 1, electrical_components: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "red_light_stick",
@@ -471,6 +531,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "seeker_grenade",
@@ -484,6 +545,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { crude_explosives: 1, arc_alloy: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "showstopper",
@@ -497,6 +559,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { electrical_components: 1, hornet_driver: 1, voltage_converter: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "shrapnel_grenade",
@@ -510,6 +573,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { crude_explosives: 1, steel_spring: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "smoke_grenade",
@@ -523,6 +587,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 14, canister: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "snap_blast_grenade",
@@ -536,6 +601,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { crude_explosives: 2, magnet: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "tagging_grenade",
@@ -549,6 +615,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { electrical_components: 1, sensors: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "trailblazer",
@@ -562,6 +629,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { synthesized_fuel: 1, crude_explosives: 2, firefly_burner: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "trigger_nade",
@@ -575,6 +643,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { crude_explosives: 2, processor: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "wolfpack",
@@ -588,6 +657,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { explosive_compound: 1, arc_motion_core: 2, rocketeer_driver: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "yellow_light_stick",
@@ -601,6 +671,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Grenade",
   },
   {
     id: "acoustic_guitar",
@@ -614,6 +685,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "adrenaline_shot",
@@ -627,6 +699,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 3, plastic_parts: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "agave_juice",
@@ -640,6 +713,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { agave: 1, empty_wine_bottle: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "bandage",
@@ -653,6 +727,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { fabric: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "barricade_kit",
@@ -666,6 +741,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Utility",
   },
   {
     id: "binoculars",
@@ -679,6 +755,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 8, rubber_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "blaze_grenade_trap",
@@ -692,6 +769,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { wires: 1, blaze_grenade: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "deadline",
@@ -705,6 +783,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { comet_igniter: 1, explosive_compound: 3, arc_circuitry: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "defibrillator",
@@ -718,6 +797,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 9, moss: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "door_blocker",
@@ -731,6 +811,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 3, rubber_parts: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Utility",
   },
   {
     id: "explosive_mine",
@@ -744,6 +825,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { explosive_compound: 1, sensors: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "fireworks_box",
@@ -757,6 +839,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { explosive_compound: 1, pop_trigger: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Utility",
   },
   {
     id: "flame_spray",
@@ -770,6 +853,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { air_freshener: 1, fireball_burner: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "fruit_mix",
@@ -783,6 +867,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { lemon: 1, apricot: 1, prickly_pear: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "gas_grenade_trap",
@@ -796,6 +881,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { wires: 1, gas_grenade: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "gas_mine",
@@ -809,6 +895,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 4, rubber_parts: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "herbal_bandage",
@@ -822,6 +909,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { durable_cloth: 1, great_mullein: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "integrated_binoculars",
@@ -835,6 +923,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "integrated_defibrillator",
@@ -848,6 +937,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "integrated_shield_recharger",
@@ -861,6 +951,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "jolt_mine",
@@ -874,6 +965,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { electrical_components: 1, battery: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "lure_grenade_trap",
@@ -887,6 +979,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { wires: 1, lure_grenade: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "noisemaker",
@@ -900,6 +993,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { speaker_component: 1, plastic_parts: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "photoelectric_cloak",
@@ -913,6 +1007,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_electrical_components: 2, speaker_component: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "pulse_mine",
@@ -926,6 +1021,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { crude_explosives: 1, wires: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "recorder",
@@ -939,6 +1035,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "remote_raider_flare",
@@ -952,6 +1049,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 2, rubber_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Utility",
   },
   {
     id: "shaker",
@@ -965,6 +1063,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { canister: 1, assorted_seeds: 7 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "shield_recharger",
@@ -978,6 +1077,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { rubber_parts: 5, arc_powercell: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "smoke_grenade_trap",
@@ -991,6 +1091,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { wires: 1, smoke_grenade: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Trap",
   },
   {
     id: "snap_hook",
@@ -1004,6 +1105,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { power_rod: 2, rope: 3, exodus_modules: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Gadget",
   },
   {
     id: "sterilized_bandage",
@@ -1017,6 +1119,21 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { durable_cloth: 2, antiseptic: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
+  },
+  {
+    id: "surge_coil",
+    name: "Surge Coil",
+    category: "consumable",
+    rarity: 2 as Rarity,
+    imageUrl: "",
+    stackSize: 3,
+    weight: 0.4,
+    recycleYield: { electrical_components: 1, sensors: 1 },
+    craftCost: { electrical_components: 1, sensors: 1, hornet_driver: 1 },
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Quick Use-Utility",
   },
   {
     id: "surge_shield_recharger",
@@ -1030,6 +1147,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { electrical_components: 1, advanced_arc_powercell: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "vita_shot",
@@ -1043,6 +1161,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { antiseptic: 2, syringe: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "vita_spray",
@@ -1056,6 +1175,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { antiseptic: 3, canister: 1, tick_pod: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Regen",
   },
   {
     id: "zipline",
@@ -1069,6 +1189,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { rope: 1, mechanical_components: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quick Use-Utility",
   },
   {
     id: "chemicals",
@@ -1082,6 +1203,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Basic Material",
   },
   {
     id: "fabric",
@@ -1095,6 +1217,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Basic Material",
   },
   {
     id: "metal_parts",
@@ -1108,6 +1231,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Basic Material",
   },
   {
     id: "plastic_parts",
@@ -1121,6 +1245,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Basic Material",
   },
   {
     id: "rubber_parts",
@@ -1134,6 +1259,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Basic Material",
   },
   {
     id: "advanced_electrical_components",
@@ -1147,6 +1273,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { wires: 3, electrical_components: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "advanced_mechanical_components",
@@ -1160,6 +1287,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { steel_spring: 2, mechanical_components: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "antiseptic",
@@ -1173,6 +1301,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 10, great_mullein: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "crude_explosives",
@@ -1186,6 +1315,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { chemicals: 6 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "durable_cloth",
@@ -1199,6 +1329,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { fabric: 14 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "electrical_components",
@@ -1212,6 +1343,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 8, rubber_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "explosive_compound",
@@ -1225,6 +1357,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { crude_explosives: 2, oil: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "magnetic_accelerator",
@@ -1238,6 +1371,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_mechanical_components: 2, arc_motion_core: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "mechanical_components",
@@ -1251,6 +1385,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 7, rubber_parts: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "mod_components",
@@ -1264,6 +1399,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { steel_spring: 2, mechanical_components: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "power_rod",
@@ -1277,6 +1413,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_electrical_components: 2, arc_circuitry: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Refined Material",
   },
   {
     id: "advanced_arc_powercell",
@@ -1290,6 +1427,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "arc_alloy",
@@ -1303,6 +1441,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "arc_circuitry",
@@ -1316,6 +1455,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { arc_alloy: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "arc_motion_core",
@@ -1329,6 +1469,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { arc_alloy: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "arc_powercell",
@@ -1342,6 +1483,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "battery",
@@ -1355,6 +1497,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "canister",
@@ -1368,6 +1511,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "complex_gun_parts",
@@ -1381,6 +1525,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { light_gun_parts: 2, medium_gun_parts: 2, heavy_gun_parts: 2 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "duct_tape",
@@ -1394,6 +1539,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "exodus_modules",
@@ -1407,6 +1553,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "great_mullein",
@@ -1420,6 +1567,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "heavy_gun_parts",
@@ -1433,6 +1581,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { simple_gun_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "light_gun_parts",
@@ -1446,6 +1595,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { simple_gun_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "magnet",
@@ -1459,6 +1609,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "medium_gun_parts",
@@ -1472,6 +1623,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { simple_gun_parts: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "moss",
@@ -1485,6 +1637,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "oil",
@@ -1498,6 +1651,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "processor",
@@ -1511,6 +1665,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "rope",
@@ -1524,6 +1679,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "sensors",
@@ -1537,6 +1693,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "simple_gun_parts",
@@ -1550,6 +1707,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "speaker_component",
@@ -1563,6 +1721,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "steel_spring",
@@ -1576,6 +1735,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "synthesized_fuel",
@@ -1589,6 +1749,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "syringe",
@@ -1602,6 +1763,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "voltage_converter",
@@ -1615,6 +1777,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "wires",
@@ -1628,6 +1791,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Topside Material",
   },
   {
     id: "angled_grip_i",
@@ -1641,6 +1805,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 6, duct_tape: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "angled_grip_ii",
@@ -1654,6 +1819,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, duct_tape: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "angled_grip_iii",
@@ -1667,6 +1833,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, duct_tape: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "anvil_splitter",
@@ -1680,6 +1847,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Tech-Mod",
   },
   {
     id: "compensator_i",
@@ -1693,6 +1861,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 6, wires: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "compensator_ii",
@@ -1706,6 +1875,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, wires: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "compensator_iii",
@@ -1719,6 +1889,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, wires: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "extended_barrel",
@@ -1732,6 +1903,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, wires: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "extended_light_mag_i",
@@ -1745,6 +1917,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 6, steel_spring: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Light-Mag",
   },
   {
     id: "extended_light_mag_ii",
@@ -1758,6 +1931,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, steel_spring: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Light-Mag",
   },
   {
     id: "extended_light_mag_iii",
@@ -1771,6 +1945,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, steel_spring: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Light-Mag",
   },
   {
     id: "extended_medium_mag_i",
@@ -1784,6 +1959,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 6, steel_spring: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Medium-Mag",
   },
   {
     id: "extended_medium_mag_ii",
@@ -1797,6 +1973,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, steel_spring: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Medium-Mag",
   },
   {
     id: "extended_medium_mag_iii",
@@ -1810,6 +1987,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, steel_spring: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Medium-Mag",
   },
   {
     id: "extended_shotgun_mag_i",
@@ -1823,6 +2001,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 6, steel_spring: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Mag",
   },
   {
     id: "extended_shotgun_mag_ii",
@@ -1836,6 +2015,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, steel_spring: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Mag",
   },
   {
     id: "extended_shotgun_mag_iii",
@@ -1849,6 +2029,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, steel_spring: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Mag",
   },
   {
     id: "horizontal_grip",
@@ -1862,6 +2043,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "kinetic_converter",
@@ -1875,6 +2057,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Stock",
   },
   {
     id: "lightweight_stock",
@@ -1888,6 +2071,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, duct_tape: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Stock",
   },
   {
     id: "muzzle_brake_i",
@@ -1901,6 +2085,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 6, wires: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "muzzle_brake_ii",
@@ -1914,6 +2099,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, wires: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "muzzle_brake_iii",
@@ -1927,6 +2113,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, wires: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "padded_stock",
@@ -1940,6 +2127,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, duct_tape: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Stock",
   },
   {
     id: "shotgun_choke_i",
@@ -1953,6 +2141,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 6, wires: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Muzzle",
   },
   {
     id: "shotgun_choke_ii",
@@ -1966,6 +2155,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, wires: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Muzzle",
   },
   {
     id: "shotgun_choke_iii",
@@ -1979,6 +2169,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, wires: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Muzzle",
   },
   {
     id: "shotgun_silencer",
@@ -1992,6 +2183,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, wires: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Shotgun-Muzzle",
   },
   {
     id: "silencer_i",
@@ -2005,6 +2197,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, wires: 4 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "silencer_ii",
@@ -2018,6 +2211,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, wires: 8 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "silencer_iii",
@@ -2031,6 +2225,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Muzzle",
   },
   {
     id: "stable_stock_i",
@@ -2044,6 +2239,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { rubber_parts: 6, duct_tape: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Stock",
   },
   {
     id: "stable_stock_ii",
@@ -2057,6 +2253,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, duct_tape: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Stock",
   },
   {
     id: "stable_stock_iii",
@@ -2070,6 +2267,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, duct_tape: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Stock",
   },
   {
     id: "vertical_grip_i",
@@ -2083,6 +2281,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { plastic_parts: 6, duct_tape: 1 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "vertical_grip_ii",
@@ -2096,6 +2295,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mechanical_components: 2, duct_tape: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "vertical_grip_iii",
@@ -2109,6 +2309,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { mod_components: 2, duct_tape: 5 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Mods-Underbarrel",
   },
   {
     id: "energy_clip",
@@ -2122,6 +2323,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_arc_powercell: 1, battery: 2 },
     craftYield: 5,
     slotSize: 1,
+    subtype: "Ammunition-Energy",
   },
   {
     id: "heavy_ammo",
@@ -2135,6 +2337,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 3, chemicals: 2 },
     craftYield: 10,
     slotSize: 1,
+    subtype: "Ammunition-Heavy",
   },
   {
     id: "launcher_ammo",
@@ -2148,6 +2351,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { arc_motion_core: 1, crude_explosives: 2 },
     craftYield: 6,
     slotSize: 1,
+    subtype: "Ammunition-Launcher",
   },
   {
     id: "light_ammo",
@@ -2161,6 +2365,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 3, chemicals: 2 },
     craftYield: 25,
     slotSize: 1,
+    subtype: "Ammunition-Light",
   },
   {
     id: "medium_ammo",
@@ -2174,6 +2379,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 3, chemicals: 2 },
     craftYield: 20,
     slotSize: 1,
+    subtype: "Ammunition-Medium",
   },
   {
     id: "shotgun_ammo",
@@ -2187,6 +2393,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { metal_parts: 3, chemicals: 2 },
     craftYield: 5,
     slotSize: 1,
+    subtype: "Ammunition-Shotgun",
   },
   {
     id: "ancient_fort_security_code",
@@ -2200,6 +2407,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "blue_gate_cellar_key",
@@ -2213,6 +2421,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "blue_gate_communication_tower_key",
@@ -2226,6 +2435,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "blue_gate_confiscation_room_key",
@@ -2239,6 +2449,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "blue_gate_village_key",
@@ -2252,6 +2463,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "buried_city_hospital_key",
@@ -2265,6 +2477,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "buried_city_jkv_employee_access_card",
@@ -2278,6 +2491,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "buried_city_residential_master_key",
@@ -2291,6 +2505,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "buried_city_town_hall_key",
@@ -2304,6 +2519,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "dam_control_tower_key",
@@ -2317,6 +2533,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "dam_controlled_access_zone_key",
@@ -2330,6 +2547,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "dam_staff_room_key",
@@ -2343,6 +2561,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "dam_surveillance_key",
@@ -2356,6 +2575,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "dam_testing_annex_key",
@@ -2369,6 +2589,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "dam_utility_key",
@@ -2382,6 +2603,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "patrol_car_key",
@@ -2395,6 +2617,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "pilgrims_peak_security_code",
@@ -2408,6 +2631,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "raider_hatch_key",
@@ -2421,6 +2645,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: { advanced_electrical_components: 1, sensors: 3 },
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "raiders_refuge_security_code",
@@ -2434,6 +2659,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "reinforced_reception_security_code",
@@ -2447,6 +2673,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "spaceport_container_storage_key",
@@ -2460,6 +2687,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "spaceport_control_tower_key",
@@ -2473,6 +2701,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "spaceport_trench_tower_key",
@@ -2486,6 +2715,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "spaceport_warehouse_key",
@@ -2499,6 +2729,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "stella_montis_archives_key",
@@ -2512,6 +2743,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "stella_montis_assembly_admin_key",
@@ -2525,6 +2757,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "stella_montis_medical_storage_key",
@@ -2538,6 +2771,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "stella_montis_security_checkpoint_key",
@@ -2551,6 +2785,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Key",
   },
   {
     id: "celestes_journal",
@@ -2564,6 +2799,21 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
+  },
+  {
+    id: "dodgers_note",
+    name: "Dodger's Note",
+    category: "consumable",
+    rarity: 0 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: {},
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "dusty_film_reel",
@@ -2577,6 +2827,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "espresso_machine_parts",
@@ -2590,6 +2841,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "esr_analyzer",
@@ -2603,6 +2855,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "experimental_seed_sample",
@@ -2616,6 +2869,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "first_wave_compass",
@@ -2629,6 +2883,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "first_wave_rations",
@@ -2642,6 +2897,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "first_wave_tape",
@@ -2655,6 +2911,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "flushing_terminal_key",
@@ -2668,6 +2925,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "lidar_scanner",
@@ -2681,6 +2939,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "major_aivas_mementos",
@@ -2694,6 +2953,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "major_aivas_patch",
@@ -2707,6 +2967,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "moisture_meter",
@@ -2720,6 +2981,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "nutrient_meter",
@@ -2733,6 +2995,21 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
+  },
+  {
+    id: "official_shutdown_documentation",
+    name: "Official Shutdown Documentation",
+    category: "consumable",
+    rarity: 0 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: {},
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "old_world_books",
@@ -2746,6 +3023,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "possibly_toxic_plant",
@@ -2759,6 +3037,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "project_heartwood_blueprints",
@@ -2772,6 +3051,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "raider_flag",
@@ -2785,6 +3065,49 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
+  },
+  {
+    id: "scout_patrol_note",
+    name: "Scout Patrol Note",
+    category: "consumable",
+    rarity: 0 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: {},
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Quest Item",
+  },
+  {
+    id: "secret_meeting_info",
+    name: "Secret Meeting Info",
+    category: "consumable",
+    rarity: 0 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: {},
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Quest Item",
+  },
+  {
+    id: "seed_vault_box_key",
+    name: "Seed Vault Box Key",
+    category: "consumable",
+    rarity: 0 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: {},
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "stack_of_movie_tapes",
@@ -2798,6 +3121,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Quest Item",
   },
   {
     id: "air_freshener",
@@ -2811,6 +3135,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "alien_duck",
@@ -2824,6 +3149,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "bloated_tuna_can",
@@ -2837,6 +3163,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "breathtaking_snow_globe",
@@ -2850,6 +3177,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "burnt-out_candles",
@@ -2863,6 +3191,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "cat_bed",
@@ -2876,6 +3205,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "coffee_pot",
@@ -2889,6 +3219,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "dart_board",
@@ -2902,6 +3233,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "doodly_duck",
@@ -2915,6 +3247,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "empty_wine_bottle",
@@ -2928,6 +3261,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "expired_pasta",
@@ -2941,6 +3275,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "faded_photograph",
@@ -2954,6 +3289,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "familiar_duck",
@@ -2967,6 +3303,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "film_reel",
@@ -2980,6 +3317,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "fine_wristwatch",
@@ -2993,6 +3331,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "flashy_duck",
@@ -3006,6 +3345,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "gentle_duck",
@@ -3019,6 +3359,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "lances_mixtape_5th_edition",
@@ -3032,6 +3373,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "light_bulb",
@@ -3045,6 +3387,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "music_album",
@@ -3058,6 +3401,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "music_box",
@@ -3071,6 +3415,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "painted_box",
@@ -3084,6 +3429,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "playing_cards",
@@ -3097,6 +3443,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "poster_of_natural_wonders",
@@ -3110,6 +3457,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "pottery",
@@ -3123,6 +3471,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "red_coral_jewelry",
@@ -3136,6 +3485,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "rosary",
@@ -3149,6 +3499,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "rubber_duck",
@@ -3162,6 +3513,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "silver_teaspoon_set",
@@ -3175,6 +3527,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "statuette",
@@ -3188,6 +3541,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "torn_book",
@@ -3201,6 +3555,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "tropical_duck",
@@ -3214,6 +3569,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "vase",
@@ -3227,6 +3583,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "very_comfortable_pillow",
@@ -3240,6 +3597,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Trinket",
   },
   {
     id: "assorted_seeds",
@@ -3253,6 +3611,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Nature",
   },
   {
     id: "alarm_clock",
@@ -3266,6 +3625,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "arc_coolant",
@@ -3279,6 +3639,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "arc_flex_rubber",
@@ -3292,6 +3653,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "arc_performance_steel",
@@ -3305,6 +3667,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "arc_synthetic_resin",
@@ -3318,6 +3681,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "arc_thermo_lining",
@@ -3331,6 +3695,21 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
+  },
+  {
+    id: "assessor_matrix",
+    name: "Assessor Matrix",
+    category: "consumable",
+    rarity: 3 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: { advanced_mechanical_components: 1, advanced_arc_powercell: 3 },
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "bastion_cell",
@@ -3344,6 +3723,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "bicycle_pump",
@@ -3357,6 +3737,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "bombardier_cell",
@@ -3370,6 +3751,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "broken_flashlight",
@@ -3383,6 +3765,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "broken_guidance_system",
@@ -3396,6 +3779,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "broken_handheld_radio",
@@ -3409,6 +3793,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "broken_taser",
@@ -3422,6 +3807,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "burned_arc_circuitry",
@@ -3435,6 +3821,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "camera_lens",
@@ -3448,6 +3835,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "candle_holder",
@@ -3461,6 +3849,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "comet_igniter",
@@ -3474,6 +3863,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "coolant",
@@ -3487,6 +3877,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "cooling_coil",
@@ -3500,6 +3891,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "cooling_fan",
@@ -3513,6 +3905,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "cracked_bioscanner",
@@ -3526,6 +3919,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "crumpled_plastic_bottle",
@@ -3539,6 +3933,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_arc_motion_core",
@@ -3552,6 +3947,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_arc_powercell",
@@ -3565,6 +3961,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_fireball_burner",
@@ -3578,6 +3975,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_heat_sink",
@@ -3591,6 +3989,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_hornet_driver",
@@ -3604,6 +4003,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_leaper_pulse_unit",
@@ -3617,6 +4017,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_rocketeer_driver",
@@ -3630,6 +4031,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_snitch_scanner",
@@ -3643,6 +4045,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_tick_pod",
@@ -3656,6 +4059,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "damaged_wasp_driver",
@@ -3669,6 +4073,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "deflated_football",
@@ -3682,6 +4087,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "degraded_arc_rubber",
@@ -3695,6 +4101,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "diving_goggles",
@@ -3708,6 +4115,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "dog_collar",
@@ -3721,6 +4129,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "dried-out_arc_resin",
@@ -3734,6 +4143,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "expired_respirator",
@@ -3747,6 +4157,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "fireball_burner",
@@ -3760,6 +4171,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "firefly_burner",
@@ -3773,6 +4185,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "flow_controller",
@@ -3786,6 +4199,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "frequency_modulation_box",
@@ -3799,6 +4213,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "fried_motherboard",
@@ -3812,6 +4227,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "frying_pan",
@@ -3825,6 +4241,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "garlic_press",
@@ -3838,6 +4255,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "geiger_counter",
@@ -3851,6 +4269,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "headphones",
@@ -3864,6 +4283,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "hornet_driver",
@@ -3877,6 +4297,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "household_cleaner",
@@ -3890,6 +4311,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "humidifier",
@@ -3903,6 +4325,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ice_cream_scooper",
@@ -3916,6 +4339,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "impure_arc_coolant",
@@ -3929,6 +4353,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "industrial_battery",
@@ -3942,6 +4367,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "industrial_charger",
@@ -3955,6 +4381,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "industrial_magnet",
@@ -3968,6 +4395,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ion_sputter",
@@ -3981,6 +4409,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "laboratory_reagents",
@@ -3994,6 +4423,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "leaper_pulse_unit",
@@ -4007,6 +4437,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "magnetron",
@@ -4020,6 +4451,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "matriarch_reactor",
@@ -4033,6 +4465,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "metal_brackets",
@@ -4046,6 +4479,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "microscope",
@@ -4059,6 +4493,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "mini_centrifuge",
@@ -4072,6 +4507,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "motor",
@@ -4085,6 +4521,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "number_plate",
@@ -4098,6 +4535,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "polluted_air_filter",
@@ -4111,6 +4549,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "pop_trigger",
@@ -4124,6 +4563,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "portable_tv",
@@ -4137,6 +4577,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "power_bank",
@@ -4150,6 +4591,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "power_cable",
@@ -4163,6 +4605,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "projector",
@@ -4176,6 +4619,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "queen_reactor",
@@ -4189,6 +4633,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "radio",
@@ -4202,6 +4647,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "radio_relay",
@@ -4215,6 +4661,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "remote_control",
@@ -4228,6 +4675,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ripped_safety_vest",
@@ -4241,6 +4689,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rocket_thruster",
@@ -4254,6 +4703,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rocketeer_driver",
@@ -4267,6 +4717,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rotary_encoder",
@@ -4280,6 +4731,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rubber_pad",
@@ -4293,6 +4745,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_accordion",
@@ -4306,6 +4759,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_augment",
@@ -4319,6 +4773,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_baton",
@@ -4332,6 +4787,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_handcuffs",
@@ -4345,6 +4801,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_parachute",
@@ -4358,6 +4815,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_riot_shield",
@@ -4371,6 +4829,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "ruined_tactical_vest",
@@ -4384,6 +4843,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rusted_bolts",
@@ -4397,6 +4857,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rusted_gear",
@@ -4410,6 +4871,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rusted_shut_medical_kit",
@@ -4423,6 +4885,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rusted_tools",
@@ -4436,6 +4899,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "rusty_arc_steel",
@@ -4449,6 +4913,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "sample_cleaner",
@@ -4462,6 +4927,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "sentinel_firing_core",
@@ -4475,6 +4941,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "shredder_gyro",
@@ -4488,6 +4955,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "signal_amplifier",
@@ -4501,6 +4969,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "snitch_scanner",
@@ -4514,6 +4983,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "spectrometer",
@@ -4527,6 +4997,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "spectrum_analyzer",
@@ -4540,6 +5011,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "spotter_relay",
@@ -4553,6 +5025,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "spring_cushion",
@@ -4566,6 +5039,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "surveyor_vault",
@@ -4579,6 +5053,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "tattered_arc_lining",
@@ -4592,6 +5067,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "tattered_clothes",
@@ -4605,6 +5081,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "telemetry_transceiver",
@@ -4618,6 +5095,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "thermostat",
@@ -4631,6 +5109,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "tick_pod",
@@ -4644,6 +5123,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "toaster",
@@ -4657,6 +5137,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "torn_blanket",
@@ -4670,6 +5151,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "turbo_pump",
@@ -4683,6 +5165,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "unusable_weapon",
@@ -4696,6 +5179,21 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
+  },
+  {
+    id: "vaporizer_regulator",
+    name: "Vaporizer Regulator",
+    category: "consumable",
+    rarity: 3 as Rarity,
+    imageUrl: "",
+    stackSize: 1,
+    weight: 0.5,
+    recycleYield: { advanced_electrical_components: 1, arc_circuitry: 2 },
+    craftCost: {},
+    craftYield: 1,
+    slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "wasp_driver",
@@ -4709,6 +5207,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "water_filter",
@@ -4722,6 +5221,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
   {
     id: "water_pump",
@@ -4735,6 +5235,7 @@ export const GAME_ITEMS: GameItem[] = [
     craftCost: {},
     craftYield: 1,
     slotSize: 1,
+    subtype: "Recyclable",
   },
 ];
 

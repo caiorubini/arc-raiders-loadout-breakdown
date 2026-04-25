@@ -41,15 +41,23 @@ export function calcMaterials(loadout: Loadout): MaterialNeed[] {
   if (!excluded.has("shield")) addCost(loadout.shieldId);
   if (!excluded.has("weapon1")) addCost(loadout.weapon1Id);
   if (!excluded.has("weapon2")) addCost(loadout.weapon2Id);
-  for (let i = 0; i < loadout.backpack.length; i++) {
-    if (!excluded.has(`bp_${i}`)) addCost(loadout.backpack[i].itemId, loadout.backpack[i].quantity);
-  }
-  for (let i = 0; i < loadout.quickUse.length; i++) {
-    if (!excluded.has(`qu_${i}`)) addCost(loadout.quickUse[i].itemId, loadout.quickUse[i].quantity);
-  }
-  for (let i = 0; i < loadout.safePocket.length; i++) {
-    if (!excluded.has(`sp_${i}`)) addCost(loadout.safePocket[i].itemId, loadout.safePocket[i].quantity);
-  }
+
+  const arrayKey = (
+    arr: typeof loadout.backpack | undefined,
+    prefix: string
+  ) => {
+    for (let i = 0; i < (arr ?? []).length; i++) {
+      if (!excluded.has(`${prefix}_${i}`)) addCost(arr![i].itemId, arr![i].quantity);
+    }
+  };
+
+  arrayKey(loadout.backpack, "bp");
+  arrayKey(loadout.quickUse, "qu");
+  arrayKey(loadout.safePocket, "sp");
+  arrayKey(loadout.healing, "hl");
+  arrayKey(loadout.grenade, "gr");
+  arrayKey(loadout.utility, "ut");
+  arrayKey(loadout.trinket, "tr");
 
   return Object.entries(cost)
     .map(([materialId, quantity]) => ({
@@ -74,15 +82,20 @@ function fromUrlSafe(s: string): string {
 
 /** Encode a loadout into a compact, WhatsApp-friendly URL string */
 export function encodeLoadout(loadout: Loadout): string {
-  // Strip nulls and empty arrays to minimize size
   const data: Record<string, unknown> = { a: loadout.augmentId };
   if (loadout.name) data.n = loadout.name;
   if (loadout.shieldId) data.s = loadout.shieldId;
   if (loadout.weapon1Id) data.w1 = loadout.weapon1Id;
   if (loadout.weapon2Id) data.w2 = loadout.weapon2Id;
-  if (loadout.backpack.length) data.bp = loadout.backpack.map((s) => [s.itemId, s.quantity]);
-  if (loadout.quickUse.length) data.qu = loadout.quickUse.map((s) => [s.itemId, s.quantity]);
-  if (loadout.safePocket.length) data.sp = loadout.safePocket.map((s) => [s.itemId, s.quantity]);
+  const enc = (slots?: { itemId: string; quantity: number }[]) =>
+    (slots ?? []).map((s) => [s.itemId, s.quantity]);
+  if (loadout.backpack.length) data.bp = enc(loadout.backpack);
+  if (loadout.quickUse.length) data.qu = enc(loadout.quickUse);
+  if (loadout.safePocket.length) data.sp = enc(loadout.safePocket);
+  if (loadout.healing?.length) data.hl = enc(loadout.healing);
+  if (loadout.grenade?.length) data.gr = enc(loadout.grenade);
+  if (loadout.utility?.length) data.ut = enc(loadout.utility);
+  if (loadout.trinket?.length) data.tr = enc(loadout.trinket);
   return toUrlSafe(btoa(JSON.stringify(data)));
 }
 
@@ -101,6 +114,10 @@ export function decodeLoadout(encoded: string): Partial<Loadout> | null {
       backpack: toSlots(data.bp),
       quickUse: toSlots(data.qu),
       safePocket: toSlots(data.sp),
+      healing: toSlots(data.hl),
+      grenade: toSlots(data.gr),
+      utility: toSlots(data.ut),
+      trinket: toSlots(data.tr),
     };
   } catch {
     return null;

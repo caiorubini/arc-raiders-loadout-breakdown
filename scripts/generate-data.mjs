@@ -152,6 +152,7 @@ export const GAME_ITEMS: GameItem[] = [\n`;
     const ammo = AMMO_MAP[d.ammo_type] || "";
     const st = d.infobox_type === "shield" ? shieldTier(d.name) : "";
 
+    const subtype = (d.item_type || "").replace(/"/g, '\\"');
     out += `  {
     id: "${toId(d.name)}",
     name: "${d.name.replace(/"/g, '\\"')}",
@@ -163,7 +164,7 @@ export const GAME_ITEMS: GameItem[] = [\n`;
     recycleYield: ${objStr(d.recycle_yield)},
     craftCost: ${objStr(d.craft_cost)},
     craftYield: ${d.craft_yield},
-    slotSize: 1,${ammo ? `\n    ammoType: "${ammo}",` : ""}${st ? `\n    shieldTier: ${st},` : ""}
+    slotSize: 1,${subtype ? `\n    subtype: "${subtype}",` : ""}${ammo ? `\n    ammoType: "${ammo}",` : ""}${st ? `\n    shieldTier: ${st},` : ""}
   },\n`;
   }
 
@@ -238,6 +239,10 @@ export const AUGMENTS: Augment[] = [\n`;
     backpackSlots: ${d.slot_backpack},
     quickUseSlots: ${d.slot_quickuse},
     safePocketSlots: ${d.slot_safepocket},
+    healingSlots: ${d.slot_healing || 0},
+    grenadeSlots: ${d.slot_grenade || 0},
+    utilitySlots: ${d.slot_utility || 0},
+    trinketSlots: ${d.slot_trinket || 0},
     shieldCompatibility: ${shieldCompat(d.shield_compat)},
     craftCost: ${objStr(d.craft_cost)},
   },\n`;
@@ -254,7 +259,111 @@ export const AUGMENTS_MAP: Record<string, Augment> = Object.fromEntries(
   console.log(`Generated augments.ts with ${augs.length} augments`);
 }
 
+// ── Generate traders.ts ──
+function generateTraders() {
+  const traders = DATA.traders ?? {};
+
+  // Build a quick lookup of valid item IDs from generated items.ts data
+  const itemIds = new Set(DATA.items.map((d) => toId(d.name)));
+
+  // Filter trader entries to only include items that exist in our DB
+  // (some entries reference upgrade tiers like "Kettle IV" — we collapse
+  // them onto the base item ID, since the ID is just "kettle")
+  const filteredTraders = {};
+  for (const [traderId, entries] of Object.entries(traders)) {
+    filteredTraders[traderId] = entries
+      .filter((e) => itemIds.has(e.itemId))
+      .map((e) => ({
+        itemId: e.itemId,
+        displayName: e.displayName,
+        price: e.price,
+        rarity: e.rarity,
+        currency: e.currency,
+        isLimited: e.isLimited,
+        dailyLimit: e.dailyLimit,
+        batchQuantity: e.batchQuantity,
+      }));
+  }
+
+  let out = `import { RECYCLE_SOURCES } from "./items";
+import { GameItem, TraderId } from "@/types/game";
+
+/**
+ * AUTO-GENERATED from wiki-data.json by scripts/generate-data.mjs
+ * Last synced: ${DATA.fetched_at}
+ * Do not edit manually — run: npm run sync
+ */
+
+export type { TraderId };
+
+export interface TraderEntry {
+  itemId: string;
+  displayName: string;
+  price: number;
+  rarity: number;
+  currency: "coins" | "cred";
+  isLimited: boolean;
+  dailyLimit: number | null;
+  batchQuantity: number | null;
+}
+
+export const TRADER_NAMES: Record<TraderId, string> = {
+  tian_wen: "Tian Wen",
+  celeste: "Celeste",
+  shani: "Shani",
+  apollo: "Apollo",
+  lance: "Lance",
+};
+
+export const TRADER_LISTINGS: Record<TraderId, TraderEntry[]> = ${JSON.stringify(filteredTraders, null, 2)
+    .replace(/"([a-zA-Z_]+)":/g, "$1:")} as Record<TraderId, TraderEntry[]>;
+
+/** Reverse index: for each itemId, list of (trader, listing). Direct sales only. */
+export const ITEM_TRADERS: Record<string, { trader: TraderId; entry: TraderEntry }[]> = {};
+for (const traderId of Object.keys(TRADER_LISTINGS) as TraderId[]) {
+  for (const entry of TRADER_LISTINGS[traderId]) {
+    if (!ITEM_TRADERS[entry.itemId]) ITEM_TRADERS[entry.itemId] = [];
+    ITEM_TRADERS[entry.itemId].push({ trader: traderId, entry });
+  }
+}
+
+/**
+ * Indirect index: for each materialId NOT directly sold, find recyclable items
+ * that yield it AND are sold by a trader. Used for "buy X, recycle into Y" hints.
+ */
+export interface IndirectSource {
+  trader: TraderId;
+  sourceItem: GameItem;
+  entry: TraderEntry;
+  yieldPerUnit: number;
+}
+
+export const INDIRECT_TRADER_SOURCES: Record<string, IndirectSource[]> = {};
+for (const matId of Object.keys(RECYCLE_SOURCES)) {
+  // Skip if directly sold — we'll show that first
+  if (ITEM_TRADERS[matId]?.length) continue;
+  for (const { item: src, yieldPerUnit } of RECYCLE_SOURCES[matId]) {
+    const traders = ITEM_TRADERS[src.id] ?? [];
+    for (const { trader, entry } of traders) {
+      if (!INDIRECT_TRADER_SOURCES[matId]) INDIRECT_TRADER_SOURCES[matId] = [];
+      INDIRECT_TRADER_SOURCES[matId].push({ trader, sourceItem: src, entry, yieldPerUnit });
+    }
+  }
+}
+
+/** True if a material is obtainable through any trader (direct or indirect). */
+export function isTraderBuyable(matId: string): boolean {
+  return !!(ITEM_TRADERS[matId]?.length || INDIRECT_TRADER_SOURCES[matId]?.length);
+}
+`;
+
+  writeFileSync(join(ROOT, "src/data/traders.ts"), out);
+  const total = Object.values(filteredTraders).reduce((s, l) => s + l.length, 0);
+  console.log(`Generated traders.ts with ${total} entries across ${Object.keys(filteredTraders).length} traders`);
+}
+
 // ── Run ──
 generateItems();
 generateAugments();
+generateTraders();
 console.log("\nDone! Run `npm run build` to verify.");

@@ -15,11 +15,31 @@ function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
+function emptyLoadout(name: string): Loadout {
+  return {
+    id: generateId(),
+    name,
+    augmentId: AUGMENTS[0].id,
+    shieldId: null,
+    weapon1Id: null,
+    weapon2Id: null,
+    backpack: [],
+    quickUse: [],
+    safePocket: [],
+    healing: [],
+    grenade: [],
+    utility: [],
+    trinket: [],
+  };
+}
+
 function Dashboard() {
   const { loadouts, setLoadouts, activeLoadoutId, setActiveLoadoutId } = useGameStore();
   const [editing, setEditing] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [copied, setCopied] = useState(false);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
 
   const active = loadouts.find((l) => l.id === activeLoadoutId) ?? null;
 
@@ -40,6 +60,10 @@ function Dashboard() {
           backpack: data.backpack ?? [],
           quickUse: data.quickUse ?? [],
           safePocket: data.safePocket ?? [],
+          healing: data.healing ?? [],
+          grenade: data.grenade ?? [],
+          utility: data.utility ?? [],
+          trinket: data.trinket ?? [],
           excludedFromCalc: data.excludedFromCalc ?? [],
         };
         setLoadouts((prev) => [...prev, imported]);
@@ -50,17 +74,7 @@ function Dashboard() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const createLoadout = () => {
-    const newLoadout: Loadout = {
-      id: generateId(),
-      name: `Loadout ${loadouts.length + 1}`,
-      augmentId: AUGMENTS[0].id,
-      shieldId: null,
-      weapon1Id: null,
-      weapon2Id: null,
-      backpack: [],
-      quickUse: [],
-      safePocket: [],
-    };
+    const newLoadout = emptyLoadout(`Loadout ${loadouts.length + 1}`);
     setLoadouts((prev) => [...prev, newLoadout]);
     setActiveLoadoutId(newLoadout.id);
   };
@@ -101,9 +115,39 @@ function Dashboard() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // ── Drag-and-drop reordering ──
+  const handleDragStart = (id: string) => () => setDraggedId(id);
+  const handleDragOver = (id: string) => (e: React.DragEvent) => {
+    e.preventDefault();
+    if (draggedId && draggedId !== id) setDragOverId(id);
+  };
+  const handleDragLeave = () => setDragOverId(null);
+  const handleDrop = (targetId: string) => (e: React.DragEvent) => {
+    e.preventDefault();
+    if (!draggedId || draggedId === targetId) {
+      setDraggedId(null);
+      setDragOverId(null);
+      return;
+    }
+    setLoadouts((prev) => {
+      const next = [...prev];
+      const fromIdx = next.findIndex((l) => l.id === draggedId);
+      const toIdx = next.findIndex((l) => l.id === targetId);
+      if (fromIdx < 0 || toIdx < 0) return prev;
+      const [moved] = next.splice(fromIdx, 1);
+      next.splice(toIdx, 0, moved);
+      return next;
+    });
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+  const handleDragEnd = () => {
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
   return (
     <div className="flex flex-col h-screen">
-      {/* Header */}
       <header className="flex items-center justify-between px-5 py-2.5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0 gap-4">
         <div className="flex items-center gap-2.5 flex-shrink-0">
           <div className="w-7 h-7 rounded bg-blue-600 flex items-center justify-center text-white font-bold text-xs">AR</div>
@@ -113,23 +157,29 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Loadout tabs + active controls */}
         <div className="flex items-center gap-1.5 overflow-x-auto flex-1 justify-end">
           {loadouts.map((l) => (
             <button
               key={l.id}
               onClick={() => setActiveLoadoutId(l.id)}
-              className={`px-3 py-1.5 text-sm rounded flex-shrink-0 transition-colors ${
+              draggable
+              onDragStart={handleDragStart(l.id)}
+              onDragOver={handleDragOver(l.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop(l.id)}
+              onDragEnd={handleDragEnd}
+              className={`px-3 py-1.5 text-sm rounded flex-shrink-0 transition-colors cursor-grab active:cursor-grabbing ${
                 activeLoadoutId === l.id
                   ? "bg-blue-600 text-white"
                   : "bg-zinc-800 text-zinc-400 hover:text-white"
+              } ${dragOverId === l.id ? "ring-2 ring-blue-400 ring-offset-1 ring-offset-zinc-900" : ""} ${
+                draggedId === l.id ? "opacity-40" : ""
               }`}
             >
               <span className="truncate max-w-[200px] inline-block align-middle">{l.name}</span>
             </button>
           ))}
 
-          {/* Active loadout controls — bigger icons, more spacing */}
           {active && !editing && (
             <div className="flex items-center gap-2 ml-2 flex-shrink-0">
               <button
@@ -185,14 +235,24 @@ function Dashboard() {
         </div>
       </header>
 
-      {/* 3-column layout */}
       <main className="flex-1 overflow-hidden relative">
         {active ? (
           <div className="h-full grid grid-cols-3 divide-x divide-zinc-800">
             <div className="overflow-y-auto p-4 space-y-3">
               <AugmentSelector
                 augmentId={active.augmentId}
-                onChange={(augmentId) => updateLoadout({ augmentId, backpack: [], quickUse: [], safePocket: [] })}
+                onChange={(augmentId) =>
+                  updateLoadout({
+                    augmentId,
+                    backpack: [],
+                    quickUse: [],
+                    safePocket: [],
+                    healing: [],
+                    grenade: [],
+                    utility: [],
+                    trinket: [],
+                  })
+                }
                 eyeActive={!(active.excludedFromCalc ?? []).includes("augment")}
                 onEyeToggle={toggleAugmentExclude}
               />
@@ -211,7 +271,6 @@ function Dashboard() {
           </div>
         )}
 
-        {/* Footer credit */}
         <div className="absolute bottom-2 right-3 text-[10px] text-zinc-700 select-none">
           by Rubinsk
         </div>

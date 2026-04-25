@@ -1,7 +1,21 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Shield, Swords, Zap, ShieldCheck, Backpack, Plus, X, Eye, EyeOff } from "lucide-react";
+import {
+  Shield,
+  Swords,
+  Zap,
+  ShieldCheck,
+  Backpack,
+  Plus,
+  X,
+  Eye,
+  EyeOff,
+  HeartPulse,
+  Bomb,
+  Wrench,
+  Star,
+} from "lucide-react";
 import { GAME_ITEMS, ITEMS_MAP } from "@/data/items";
 import { NumberInput } from "@/components/ui/NumberInput";
 import { AUGMENTS_MAP } from "@/data/augments";
@@ -22,7 +36,6 @@ function toggleExclude(loadout: Loadout, key: string): string[] {
   return current.includes(key) ? current.filter((k) => k !== key) : [...current, key];
 }
 
-/** Eye toggle button */
 function EyeToggle({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
     <button
@@ -34,6 +47,33 @@ function EyeToggle({ active, onClick }: { active: boolean; onClick: () => void }
     </button>
   );
 }
+
+// ── Item filter pools ──
+
+const ALL_NON_GEAR_ITEMS = GAME_ITEMS; // Backpack accepts everything (including weapons, shields, augments)
+
+const QUICK_USE_ITEMS = GAME_ITEMS.filter((i) =>
+  ["consumable", "throwable"].includes(i.category)
+);
+
+const HEALING_ITEMS = GAME_ITEMS.filter(
+  (i) => (i.subtype ?? "").includes("Regen")
+);
+
+const GRENADE_ITEMS = GAME_ITEMS.filter(
+  (i) => (i.subtype ?? "").includes("Grenade")
+);
+
+const UTILITY_ITEMS = GAME_ITEMS.filter((i) => {
+  const s = i.subtype ?? "";
+  return s.includes("Utility") || s.includes("Gadget") || s.includes("Trap");
+});
+
+const TRINKET_ITEMS = GAME_ITEMS.filter((i) => (i.subtype ?? "").includes("Trinket"));
+
+const SAFE_POCKET_ITEMS = GAME_ITEMS;
+
+// ── Components ──
 
 /** Column 1: Shield + Weapons */
 export function CoreGearSlots({ loadout, onUpdate }: Props) {
@@ -89,53 +129,96 @@ export function CoreGearSlots({ loadout, onUpdate }: Props) {
   );
 }
 
-/** Column 2: Backpack + Quick Use + Safe Pocket */
+/** Column 2: Quick Use → Healing → Grenade → Utility → Trinket → Backpack → Safe Pocket */
 export function InventorySlots({ loadout, onUpdate }: Props) {
   const augment = AUGMENTS_MAP[loadout.augmentId];
-
-  const allItems = useMemo(
-    () => GAME_ITEMS.filter((i) => !["weapon", "armor"].includes(i.category)),
-    []
-  );
-
-  const quickUseItems = useMemo(
-    () => GAME_ITEMS.filter((i) => ["consumable", "throwable"].includes(i.category)),
-    []
-  );
+  if (!augment) return null;
 
   return (
     <div className="space-y-3">
-      <SlotArray
-        label="Backpack"
-        icon={<Backpack size={14} />}
-        maxSlots={augment?.backpackSlots ?? 0}
-        slots={loadout.backpack}
-        items={allItems}
-        onChange={(slots) => onUpdate({ backpack: slots })}
-        excludeKeyPrefix="bp"
-        loadout={loadout}
-        onUpdate={onUpdate}
-      />
-      {(augment?.quickUseSlots ?? 0) > 0 && (
-        <FixedSlotArray
+      {augment.quickUseSlots > 0 && (
+        <SlotArray
           label="Quick Use"
           icon={<Zap size={14} />}
-          totalSlots={augment!.quickUseSlots}
+          maxSlots={augment.quickUseSlots}
           slots={loadout.quickUse}
-          items={quickUseItems}
+          items={QUICK_USE_ITEMS}
           onChange={(slots) => onUpdate({ quickUse: slots })}
           excludeKeyPrefix="qu"
           loadout={loadout}
           onUpdate={onUpdate}
         />
       )}
-      {(augment?.safePocketSlots ?? 0) > 0 && (
-        <FixedSlotArray
+      {(augment.healingSlots ?? 0) > 0 && (
+        <SlotArray
+          label="Healing"
+          icon={<HeartPulse size={14} />}
+          maxSlots={augment.healingSlots ?? 0}
+          slots={loadout.healing ?? []}
+          items={HEALING_ITEMS}
+          onChange={(slots) => onUpdate({ healing: slots })}
+          excludeKeyPrefix="hl"
+          loadout={loadout}
+          onUpdate={onUpdate}
+        />
+      )}
+      {(augment.grenadeSlots ?? 0) > 0 && (
+        <SlotArray
+          label="Grenade"
+          icon={<Bomb size={14} />}
+          maxSlots={augment.grenadeSlots ?? 0}
+          slots={loadout.grenade ?? []}
+          items={GRENADE_ITEMS}
+          onChange={(slots) => onUpdate({ grenade: slots })}
+          excludeKeyPrefix="gr"
+          loadout={loadout}
+          onUpdate={onUpdate}
+        />
+      )}
+      {(augment.utilitySlots ?? 0) > 0 && (
+        <SlotArray
+          label="Utility"
+          icon={<Wrench size={14} />}
+          maxSlots={augment.utilitySlots ?? 0}
+          slots={loadout.utility ?? []}
+          items={UTILITY_ITEMS}
+          onChange={(slots) => onUpdate({ utility: slots })}
+          excludeKeyPrefix="ut"
+          loadout={loadout}
+          onUpdate={onUpdate}
+        />
+      )}
+      {(augment.trinketSlots ?? 0) > 0 && (
+        <SlotArray
+          label="Trinket"
+          icon={<Star size={14} />}
+          maxSlots={augment.trinketSlots ?? 0}
+          slots={loadout.trinket ?? []}
+          items={TRINKET_ITEMS}
+          onChange={(slots) => onUpdate({ trinket: slots })}
+          excludeKeyPrefix="tr"
+          loadout={loadout}
+          onUpdate={onUpdate}
+        />
+      )}
+      <SlotArray
+        label="Backpack"
+        icon={<Backpack size={14} />}
+        maxSlots={augment.backpackSlots ?? 0}
+        slots={loadout.backpack}
+        items={ALL_NON_GEAR_ITEMS}
+        onChange={(slots) => onUpdate({ backpack: slots })}
+        excludeKeyPrefix="bp"
+        loadout={loadout}
+        onUpdate={onUpdate}
+      />
+      {augment.safePocketSlots > 0 && (
+        <SlotArray
           label="Safe Pocket"
           icon={<ShieldCheck size={14} />}
-          totalSlots={augment!.safePocketSlots}
+          maxSlots={augment.safePocketSlots}
           slots={loadout.safePocket}
-          items={allItems}
+          items={SAFE_POCKET_ITEMS}
           onChange={(slots) => onUpdate({ safePocket: slots })}
           excludeKeyPrefix="sp"
           loadout={loadout}
@@ -146,7 +229,7 @@ export function InventorySlots({ loadout, onUpdate }: Props) {
   );
 }
 
-/** Single dropdown slot (shield, weapon) — bigger icon */
+/** Single dropdown slot (shield, weapon) */
 function EquipSlot({
   label,
   icon,
@@ -172,6 +255,12 @@ function EquipSlot({
 }) {
   const selected = selectedId ? ITEMS_MAP[selectedId] : null;
 
+  // Single alphabetical list, no category groups
+  const sortedItems = useMemo(
+    () => [...items].sort((a, b) => a.name.localeCompare(b.name)),
+    [items]
+  );
+
   return (
     <div className={`bg-zinc-800/40 rounded-lg p-2.5 border border-zinc-700/50 ${!eyeActive && hasItem ? "opacity-50" : ""}`}>
       <div className="flex items-center gap-2 mb-1.5">
@@ -180,16 +269,14 @@ function EquipSlot({
         {hasItem && <EyeToggle active={eyeActive} onClick={onEyeToggle} />}
       </div>
       <div className="flex items-center gap-2.5">
-        {selected && (
-          <ItemIcon name={selected.name} imageUrl={selected.imageUrl} rarity={selected.rarity} size={40} />
-        )}
+        {selected && <ItemIcon name={selected.name} imageUrl={selected.imageUrl} rarity={selected.rarity} size={40} />}
         <select
           value={selectedId ?? ""}
           onChange={(e) => onSelect(e.target.value || null)}
           className="flex-1 bg-zinc-900 border border-zinc-700 rounded px-2 py-1.5 text-sm text-white focus:outline-none focus:border-zinc-500 min-w-0"
         >
           <option value="">— None —</option>
-          {items
+          {sortedItems
             .filter((i) => !excludeIds.includes(i.id))
             .map((i) => (
               <option key={i.id} value={i.id}>
@@ -212,91 +299,7 @@ function EquipSlot({
   );
 }
 
-/** Fixed slot array — pre-fills all slots as dropdowns (Quick Use, Safe Pocket) */
-function FixedSlotArray({
-  label,
-  icon,
-  totalSlots,
-  slots,
-  items,
-  onChange,
-  excludeKeyPrefix,
-  loadout,
-  onUpdate,
-}: {
-  label: string;
-  icon: React.ReactNode;
-  totalSlots: number;
-  slots: LoadoutSlot[];
-  items: GameItem[];
-  onChange: (slots: LoadoutSlot[]) => void;
-  excludeKeyPrefix: string;
-  loadout: Loadout;
-  onUpdate: (patch: Partial<Loadout>) => void;
-}) {
-  // Pad slots to totalSlots length
-  const usedIds = slots.map((s) => s.itemId);
-
-  const setSlotItem = (index: number, itemId: string | null) => {
-    if (!itemId) {
-      // Remove slot at index
-      onChange(slots.filter((_, i) => i !== index));
-    } else if (index < slots.length) {
-      // Replace existing
-      onChange(slots.map((s, i) => (i === index ? { itemId, quantity: 1 } : s)));
-    } else {
-      // Append new
-      onChange([...slots, { itemId, quantity: 1 }]);
-    }
-  };
-
-  return (
-    <div className="bg-zinc-800/40 rounded-lg p-2.5 border border-zinc-700/50">
-      <div className="flex items-center justify-between mb-1.5">
-        <div className="flex items-center gap-2">
-          <span className="text-zinc-400">{icon}</span>
-          <span className="text-xs text-zinc-400 uppercase tracking-wide font-medium">{label}</span>
-        </div>
-        <span className="text-xs font-mono text-zinc-500">{slots.length}/{totalSlots}</span>
-      </div>
-      <div className="space-y-1">
-        {Array.from({ length: totalSlots }).map((_, i) => {
-          const slot = slots[i];
-          const item = slot ? ITEMS_MAP[slot.itemId] : null;
-          const exKey = `${excludeKeyPrefix}_${i}`;
-          const eyeActive = !isExcluded(loadout, exKey);
-
-          return (
-            <div key={i} className={`flex items-center gap-2 bg-zinc-900/60 rounded px-2 py-1 ${!eyeActive && item ? "opacity-50" : ""}`}>
-              {item ? (
-                <ItemIcon name={item.name} imageUrl={item.imageUrl} rarity={item.rarity} size={28} />
-              ) : (
-                <div className="w-7 h-7 rounded border border-zinc-700 bg-zinc-800 flex items-center justify-center text-zinc-600 text-[10px] flex-shrink-0">
-                  {i + 1}
-                </div>
-              )}
-              <select
-                value={slot?.itemId ?? ""}
-                onChange={(e) => setSlotItem(i, e.target.value || null)}
-                className="flex-1 bg-transparent border border-zinc-700 rounded px-1.5 py-1 text-xs text-white focus:outline-none focus:border-zinc-500 min-w-0"
-              >
-                <option value="">— Empty —</option>
-                {items
-                  .filter((it) => it.id === slot?.itemId || !usedIds.includes(it.id))
-                  .map((it) => (
-                    <option key={it.id} value={it.id}>{it.name}</option>
-                  ))}
-              </select>
-              {item && <EyeToggle active={eyeActive} onClick={() => onUpdate({ excludedFromCalc: toggleExclude(loadout, exKey) })} />}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/** Dynamic slot array (Backpack) — add/remove freely */
+/** Dynamic slot array — search-first add button, used for ALL inventory sections */
 function SlotArray({
   label,
   icon,
@@ -398,26 +401,48 @@ function SlotArray({
   );
 }
 
-function SlotPicker({ items, usedIds, onSelect }: { items: GameItem[]; usedIds: string[]; onSelect: (id: string) => void }) {
+function SlotPicker({
+  items,
+  usedIds,
+  onSelect,
+}: {
+  items: GameItem[];
+  usedIds: string[];
+  onSelect: (id: string) => void;
+}) {
   const [search, setSearch] = useState("");
   const filtered = useMemo(
-    () => items.filter((i) => !usedIds.includes(i.id) && i.name.toLowerCase().includes(search.toLowerCase())).sort((a, b) => a.rarity - b.rarity || a.name.localeCompare(b.name)),
+    () =>
+      items
+        .filter((i) => !usedIds.includes(i.id) && i.name.toLowerCase().includes(search.toLowerCase()))
+        .sort((a, b) => a.name.localeCompare(b.name)),
     [items, usedIds, search]
   );
 
   return (
     <div className="mt-1 bg-zinc-900 border border-zinc-700 rounded-lg overflow-hidden">
       <input
-        type="text" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} autoFocus
+        type="text"
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        autoFocus
         className="w-full px-3 py-1.5 bg-transparent border-b border-zinc-700 text-xs text-white placeholder:text-zinc-500 focus:outline-none"
       />
-      <div className="max-h-32 overflow-y-auto">
+      <div className="max-h-48 overflow-y-auto">
         {filtered.map((item) => (
-          <button key={item.id} onClick={() => onSelect(item.id)} className="w-full flex items-center gap-2 px-3 py-1 hover:bg-zinc-800 text-left">
+          <button
+            key={item.id}
+            onClick={() => onSelect(item.id)}
+            className="w-full flex items-center gap-2 px-3 py-1 hover:bg-zinc-800 text-left"
+          >
             <ItemIcon name={item.name} imageUrl={item.imageUrl} rarity={item.rarity} size={20} />
             <span className="flex-1 text-[11px] text-white truncate">{item.name}</span>
           </button>
         ))}
+        {filtered.length === 0 && (
+          <div className="px-3 py-2 text-[11px] text-zinc-600 text-center">No items found.</div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,26 @@
 "use client";
 
 import React, { useMemo, useState, useCallback } from "react";
-import { Check, Package, Hammer, Recycle, ChevronRight, Undo2, Layers, ArrowUpDown } from "lucide-react";
+import {
+  Check,
+  Package,
+  Hammer,
+  Recycle,
+  ChevronRight,
+  Undo2,
+  Layers,
+  ArrowUpDown,
+  Coins,
+  Filter,
+} from "lucide-react";
 import { useGameStore } from "@/hooks/useGameStore";
 import { ITEMS_MAP, RECYCLE_SOURCES } from "@/data/items";
+import {
+  ITEM_TRADERS,
+  INDIRECT_TRADER_SOURCES,
+  TRADER_NAMES,
+  isTraderBuyable,
+} from "@/data/traders";
 import { calcMaterials } from "./calcEngine";
 import { ItemIcon } from "@/components/ui/ItemIcon";
 import { Loadout } from "@/types/game";
@@ -15,7 +32,19 @@ interface DisplayMaterial {
   brokenDown: boolean;
 }
 
-type SortMode = "rarity" | "quantity";
+type SortMode = "rarity" | "quantity" | "trader";
+
+const SORT_LABELS: Record<SortMode, string> = {
+  quantity: "Qty",
+  rarity: "Rarity",
+  trader: "Trader",
+};
+
+const NEXT_SORT: Record<SortMode, SortMode> = {
+  quantity: "rarity",
+  rarity: "trader",
+  trader: "quantity",
+};
 
 export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
   const { checkedMaterials, setCheckedMaterials } = useGameStore();
@@ -25,6 +54,7 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
 
   const [breakdowns, setBreakdowns] = useState<Set<string>>(new Set());
   const [sortMode, setSortMode] = useState<SortMode>("quantity");
+  const [hideLootOnly, setHideLootOnly] = useState(false);
 
   const breakdownMat = useCallback((matId: string) => {
     setBreakdowns((prev) => new Set(prev).add(matId));
@@ -38,9 +68,7 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
     });
   }, []);
 
-  // Recursive breakdown: keep expanding until stable
   const { active, broken } = useMemo(() => {
-    // Start with base materials as a working pool
     let pool: Record<string, { quantity: number; rarity: number }> = {};
     for (const mat of baseMaterials) {
       pool[mat.materialId] = {
@@ -51,17 +79,14 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
 
     const brokenList: DisplayMaterial[] = [];
 
-    // Iterate: expand any material in pool that's in breakdowns
     let changed = true;
     while (changed) {
       changed = false;
       const nextPool: Record<string, { quantity: number; rarity: number }> = {};
-
       for (const [matId, { quantity, rarity }] of Object.entries(pool)) {
         if (breakdowns.has(matId)) {
           const item = ITEMS_MAP[matId];
           if (item && Object.keys(item.craftCost).length > 0) {
-            // Expand into components
             for (const [compId, perUnit] of Object.entries(item.craftCost)) {
               const r = ITEMS_MAP[compId]?.rarity ?? 0;
               nextPool[compId] = {
@@ -69,11 +94,9 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
                 rarity: r,
               };
             }
-            // Track as broken down (avoid duplicates)
             if (!brokenList.some((b) => b.materialId === matId)) {
               brokenList.push({ materialId: matId, quantity, rarity, brokenDown: true });
             } else {
-              // Update quantity if already in broken list
               const existing = brokenList.find((b) => b.materialId === matId)!;
               existing.quantity = quantity;
             }
@@ -81,7 +104,6 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
             continue;
           }
         }
-        // Keep in pool
         nextPool[matId] = {
           quantity: (nextPool[matId]?.quantity ?? 0) + quantity,
           rarity: rarity,
@@ -90,12 +112,21 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
       pool = nextPool;
     }
 
-    const sorter = (a: DisplayMaterial, b: DisplayMaterial) =>
-      sortMode === "quantity"
-        ? b.quantity - a.quantity || b.rarity - a.rarity
-        : b.rarity - a.rarity || a.materialId.localeCompare(b.materialId);
+    const traderRank = (id: string) => (isTraderBuyable(id) ? 0 : 1);
 
-    const activeList: DisplayMaterial[] = Object.entries(pool)
+    const sorter = (a: DisplayMaterial, b: DisplayMaterial) => {
+      if (sortMode === "trader") {
+        const t = traderRank(a.materialId) - traderRank(b.materialId);
+        if (t !== 0) return t;
+        return b.quantity - a.quantity || b.rarity - a.rarity;
+      }
+      if (sortMode === "quantity") {
+        return b.quantity - a.quantity || b.rarity - a.rarity;
+      }
+      return b.rarity - a.rarity || a.materialId.localeCompare(b.materialId);
+    };
+
+    let activeList: DisplayMaterial[] = Object.entries(pool)
       .map(([materialId, { quantity, rarity }]) => ({
         materialId,
         quantity,
@@ -104,8 +135,12 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
       }))
       .sort(sorter);
 
+    if (hideLootOnly) {
+      activeList = activeList.filter((m) => isTraderBuyable(m.materialId));
+    }
+
     return { active: activeList, broken: brokenList };
-  }, [baseMaterials, breakdowns, sortMode]);
+  }, [baseMaterials, breakdowns, sortMode, hideLootOnly]);
 
   const toggle = (matId: string) => {
     setCheckedMaterials((prev) =>
@@ -128,14 +163,24 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
     <div>
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-sm font-bold text-white uppercase tracking-wide">Materials</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
-            onClick={() => setSortMode((s) => (s === "rarity" ? "quantity" : "rarity"))}
+            onClick={() => setSortMode((s) => NEXT_SORT[s])}
             className="flex items-center gap-1 text-[10px] text-zinc-500 hover:text-zinc-300 uppercase tracking-wide"
-            title={`Sort by ${sortMode === "rarity" ? "quantity" : "rarity"}`}
+            title={`Sort: ${SORT_LABELS[sortMode]} — click to cycle`}
           >
             <ArrowUpDown size={10} />
-            {sortMode === "rarity" ? "Rarity" : "Qty"}
+            {SORT_LABELS[sortMode]}
+          </button>
+          <button
+            onClick={() => setHideLootOnly((v) => !v)}
+            className={`flex items-center gap-1 text-[10px] uppercase tracking-wide ${
+              hideLootOnly ? "text-emerald-400 hover:text-emerald-300" : "text-zinc-500 hover:text-zinc-300"
+            }`}
+            title={hideLootOnly ? "Showing trader-buyable only" : "Hide loot-only items"}
+          >
+            <Filter size={10} />
+            Trader-only
           </button>
           <span className="text-xs text-zinc-500">{done}/{active.length}</span>
         </div>
@@ -166,7 +211,11 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
                 {item && <ItemIcon name={item.name} imageUrl={item.imageUrl} rarity={item.rarity} size={20} />}
                 <span className="flex-1 text-xs line-through truncate">{item?.name ?? mat.materialId}</span>
                 <span className="text-xs font-mono">x{mat.quantity}</span>
-                <button onClick={() => undoBreakdown(mat.materialId)} className="text-zinc-600 hover:text-zinc-300 ml-1" title="Undo breakdown">
+                <button
+                  onClick={() => undoBreakdown(mat.materialId)}
+                  className="text-zinc-600 hover:text-zinc-300 ml-1"
+                  title="Undo breakdown"
+                >
                   <Undo2 size={12} />
                 </button>
               </div>
@@ -176,6 +225,26 @@ export function MaterialChecklist({ loadout }: { loadout: Loadout }) {
       )}
     </div>
   );
+}
+
+/** Returns a short inline annotation like "(Tian Wen: 3/day)" or "(Lance: 3x Noisemaker/day)" — null if loot-only. */
+function traderHint(matId: string): string | null {
+  const direct = ITEM_TRADERS[matId];
+  if (direct?.length) {
+    const best = direct[0];
+    const trader = TRADER_NAMES[best.trader];
+    if (best.entry.dailyLimit) return `${trader}: ${best.entry.dailyLimit}/day`;
+    if (best.entry.batchQuantity) return `${trader}: ×${best.entry.batchQuantity}`;
+    return trader;
+  }
+  const indirect = INDIRECT_TRADER_SOURCES[matId];
+  if (indirect?.length) {
+    const best = indirect[0];
+    const trader = TRADER_NAMES[best.trader];
+    const limit = best.entry.dailyLimit ? ` ${best.entry.dailyLimit}/day` : "";
+    return `${trader}: ${best.sourceItem.name}${limit}`;
+  }
+  return null;
 }
 
 function MaterialRow({
@@ -194,6 +263,7 @@ function MaterialRow({
   const sources = RECYCLE_SOURCES[mat.materialId] ?? [];
   const hasCraft = item && Object.keys(item.craftCost).length > 0;
   const hasAlternatives = hasCraft || sources.length > 0;
+  const hint = traderHint(mat.materialId);
 
   return (
     <div>
@@ -213,9 +283,19 @@ function MaterialRow({
 
         {item && <ItemIcon name={item.name} imageUrl={item.imageUrl} rarity={item.rarity} size={22} />}
 
-        <span className={`flex-1 text-sm truncate ${checked ? "text-zinc-500 line-through" : "text-white"}`}>
-          {item?.name ?? mat.materialId}
-        </span>
+        <div className={`flex-1 min-w-0 ${checked ? "opacity-50" : ""}`}>
+          <div className="flex items-baseline gap-1.5">
+            <span className={`text-sm truncate ${checked ? "text-zinc-500 line-through" : "text-white"}`}>
+              {item?.name ?? mat.materialId}
+            </span>
+            {hint && (
+              <span className="text-[10px] text-amber-400/80 truncate flex-shrink min-w-0 inline-flex items-center gap-0.5">
+                <Coins size={9} />
+                {hint}
+              </span>
+            )}
+          </div>
+        </div>
 
         {hasCraft && !checked && (
           <button

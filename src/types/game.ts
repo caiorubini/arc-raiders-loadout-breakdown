@@ -55,6 +55,8 @@ export interface GameItem {
   ammoType?: string;
   /** For shields: light / medium / heavy */
   shieldTier?: ShieldTier;
+  /** Wiki's specific type string, e.g. "Quick Use, Regenerative", "Trinket", "Utility". */
+  subtype?: string;
 }
 
 // ── Augment Definition ──
@@ -68,9 +70,17 @@ export interface Augment {
   backpackSlots: number;
   safePocketSlots: number;
   quickUseSlots: number;
+  /** Augment-specific extra slots */
+  healingSlots?: number;
+  grenadeSlots?: number;
+  utilitySlots?: number;
+  trinketSlots?: number;
   shieldCompatibility: ShieldTier[];
   craftCost: Record<MaterialId, number>;
 }
+
+// ── Trader IDs ──
+export type TraderId = "tian_wen" | "celeste" | "shani" | "apollo" | "lance";
 
 // ── Loadout ──
 export interface LoadoutSlot {
@@ -88,6 +98,11 @@ export interface Loadout {
   backpack: LoadoutSlot[];
   quickUse: LoadoutSlot[];
   safePocket: LoadoutSlot[];
+  /** Optional augment-specific slot arrays — present when the equipped augment grants them. */
+  healing?: LoadoutSlot[];
+  grenade?: LoadoutSlot[];
+  utility?: LoadoutSlot[];
+  trinket?: LoadoutSlot[];
   /** Item slots excluded from material calc (eye toggle off). "augment" | shieldId | weapon1Id | etc */
   excludedFromCalc?: string[];
 }
